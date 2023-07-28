@@ -3,32 +3,40 @@ import Weaver from "main";
 
 export const DEFAULT_MODELS: Record<string, string> = {
 	"gpt-3.5-turbo": "gpt-3.5-turbo",
+	"gpt-3.5-turbo-16k": "gpt-3.5-turbo-16k",
 	"gpt-4": "gpt-4"
 };
 
+const DEFAULT_TOKENS_FOR_MODELS: Record<string, number> = {
+    "gpt-3.5-turbo": 500,
+    "gpt-3.5-turbo-16k": 750,
+    "gpt-4": 1000
+};
+
 export interface WeaverSettings {
-    activeThreadId: number,
+    activeThreadId: string | number,
     activeThreadTitle: string | null,
     apiKey: string,
     engine: string,
-	engineInfo: boolean,
+    engineInfo: boolean,
     frequencyPenalty: number,
-    maxTokens: number,
-    models: any,
+    maxTokens: number;
+    models: Record<string, string>,
     openOnStartUp: boolean,
-	stream: boolean,
+    stream: boolean,
     systemRolePrompt: string,
     creativeSystemRolePrompt: string,
     balancedSystemRolePrompt: string,
     preciseSystemRolePrompt: string,
     temperature: number,
     weaverFolderPath: string,
-	threadViewIdentationGuides: boolean,
-	threadViewCompactMode: boolean,
-	lastConversationId: string,
-	loadLastConversationState: boolean,
-	loadLastConversation: boolean
+    threadViewIdentationGuides: boolean,
+    threadViewCompactMode: boolean,
+    lastConversationId: string,
+    loadLastConversationState: boolean,
+    loadLastConversation: boolean
 }
+
 
 export const DEFAULT_SETTINGS: WeaverSettings = {
     activeThreadId: -1,
@@ -37,7 +45,7 @@ export const DEFAULT_SETTINGS: WeaverSettings = {
     engine: "gpt-3.5-turbo",
 	engineInfo: true,
     frequencyPenalty: 0.5,
-    maxTokens: 512,
+    maxTokens: 500,
     models: DEFAULT_MODELS,
     openOnStartUp: true,
 	stream: false,
@@ -55,15 +63,15 @@ export const DEFAULT_SETTINGS: WeaverSettings = {
 };
 
 export class WeaverSettingTab extends PluginSettingTab {
-	public app: App;
-	private readonly plugin: Weaver;
+    public app: App;
+    private readonly plugin: Weaver;
 
-	constructor(app: App, plugin: Weaver) {
-		super(app, plugin);
+    constructor(app: App, plugin: Weaver) {
+        super(app, plugin);
 
-		this.app = app;
-		this.plugin = plugin;
-	}
+        this.app = app;
+        this.plugin = plugin;
+    }
 
 	display(): void {
 		const { containerEl } = this;
@@ -75,7 +83,6 @@ export class WeaverSettingTab extends PluginSettingTab {
 			text: 'OpenAI'
 		});
 
-		let inputEl;
 		new Setting(containerEl)
 			.setName('API Key')
 			.setDesc('In order to generate an API Key, you must first create an OpenAI account.')
@@ -86,27 +93,23 @@ export class WeaverSettingTab extends PluginSettingTab {
 					this.plugin.settings.apiKey = value;
 					await this.plugin.saveSettings();
 				})
-				.then((textEl) => {
-					inputEl = textEl
-				})
 				.inputEl.setAttribute('type', 'password')
 			)
 
-		let models: Record<string, string> = this.plugin.settings.models;
-
 		new Setting(containerEl)
 			.setName('Model')
-			.setDesc('This allows you to choose which model the chat view should utilize..')
 			.addDropdown((cb) => {
-				Object.entries(models).forEach(([key, value]) => {
+				Object.entries(DEFAULT_MODELS).forEach(([key, value]) => {
 					cb.addOption(key, value);
 				});
 				cb.setValue(this.plugin.settings.engine);
 				cb.onChange(async (value) => {
 					this.plugin.settings.engine = value;
+					// Update maxTokens based on the selected model
+					this.plugin.settings.maxTokens = DEFAULT_TOKENS_FOR_MODELS[value];
 					await this.plugin.saveSettings();
 				});
-			})
+			});
 
 		containerEl.createEl('h2', { text: 'Model Configuration' });
 
@@ -142,7 +145,7 @@ export class WeaverSettingTab extends PluginSettingTab {
 					this.plugin.settings.preciseSystemRolePrompt = value;
 					await this.plugin.saveSettings();
 				})
-			)
+		)
 
 		new Setting(containerEl)
 			.setName('Maximum Tokens')
