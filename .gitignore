@@ -21,12 +21,19 @@ conversations.json
 
 # Exclude macOS Finder (System Explorer) View States
 .DS_Store
+__MACOSX
 
 # Style
 styles.css
 package-lock.json
 
-dist
-.zip
+# Exclude output directories
+output/
+dist/
+*.zip
 
+# Ignore environment variables
 .env
+
+# Ignore log files
+*.log
