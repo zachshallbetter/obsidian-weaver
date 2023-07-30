@@ -37,10 +37,6 @@
 	},
 	"include": [
 		"**/*.ts",
-		"**/*.tsx",
-		"src/**/*.ts",
-		"src/**/*",
-		"typings/**/*.ts", 
-		"./esbuild.config.mjs",
+		"**/*.tsx"
 	]
 }

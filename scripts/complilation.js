@@ -36,7 +36,7 @@ function compileSass(): void {
 
 // Compile Typescript
 function compileTypescript(): void {
-  
+
 }
 
 // Compress Images
