@@ -2,9 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { List, CellMeasurer, CellMeasurerCache, AutoSizer } from "react-virtualized";
 import { IConversation } from "interfaces/IThread";
 import Weaver from "main";
-import { groupBy } from "lodash";
 import { ThreadListItemRenderer } from './ThreadListItemRenderer';
-import { filterConversations, getSection, getItemSize } from '../../helpers/ThreadHelperFunctions';
+import { filterConversations, groupBy, getSection, getItemSize } from '../../helpers/ThreadHelperFunctions';
 
 interface ThreadConversationListProps {
 	plugin: Weaver;
