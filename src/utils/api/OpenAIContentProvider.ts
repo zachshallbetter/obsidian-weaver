@@ -1,16 +1,17 @@
+
 import Weaver from "main";
-import OpenAIRequestFormatter from "./OpenAIRequestFormatter";
+import OpenAIRequestFormatter from "../utils/api/OpenAIRequestFormatter";
 import { IChatMessage, IConversation } from "interfaces/IThread";
-import { OpenAIRequestManager } from "./OpenAIRequestManager";
+import { OpenAIRequestManager } from "../utils/api/OpenAIRequestManager";
 
 export default class OpenAIContentProvider {
 	private readonly plugin: Weaver;
-	private OpenAIRequestFormatter: OpenAIRequestFormatter;
+	private requestFormatter: OpenAIRequestFormatter;
 	private streamManager: OpenAIRequestManager;
 
 	constructor(plugin: Weaver) {
 		this.plugin = plugin;
-		this.OpenAIRequestFormatter = new OpenAIRequestFormatter(this.plugin);
+		this.requestFormatter = new OpenAIRequestFormatter(this.plugin);
 		this.streamManager = new OpenAIRequestManager(plugin);
 	}
 
@@ -22,9 +23,8 @@ export default class OpenAIContentProvider {
 		userMessage: IChatMessage,
 		addMessage: (message: IChatMessage) => void,
 		updateCurrentAssistantMessageContent: (content: string) => void,
-	) {
-		const requestParameters = this.OpenAIRequestFormatter.prepareChatRequestParameters(parameters, additionalParameters, conversation, conversationContext);
-
+	): Promise<boolean> {
+		const requestParameters = this.requestFormatter.prepareChatRequestParameters(parameters, additionalParameters, conversation, conversationContext);
 		try {
 			await this.streamManager.handleOpenAIStreamSSE(
 				requestParameters,
@@ -33,8 +33,11 @@ export default class OpenAIContentProvider {
 				updateCurrentAssistantMessageContent,
 				conversation
 			);
+			return true;
 		} catch (error) {
 			console.error('Error in handleOpenAIStreamSSE:', error.data);
+			addMessage({ content: "Sorry, an error occurred while processing your request.", type: "error" });
+			return false;
 		}
 	}
 

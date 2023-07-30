@@ -2,7 +2,7 @@ import { IChatMessage, IConversation } from 'interfaces/IThread';
 import Weaver from 'main';
 import { FileSystemAdapter } from 'obsidian';
 import { v4 as uuidv4 } from 'uuid';
-import { FileIOManager } from './FileIOManager';
+import { FileIOManager } from '../utils/api/FileIOManager';
 
 export class ConversationManager {
 	static async createNewConversation(plugin: Weaver): Promise<IConversation> {

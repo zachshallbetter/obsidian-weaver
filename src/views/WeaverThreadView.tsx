@@ -7,7 +7,7 @@ import React from 'react';
 import { createRoot, Root } from "react-dom/client";
 
 // Constants
-import { WEAVER_THREAD_VIEW } from '../constants';
+import { WEAVER_THREAD_VIEW } from '.../utils/api/constants';
 import { ThreadTabsManager } from 'components/Thread/ThreadTabsManager';
 
 export class WeaverThreadView extends ItemView {

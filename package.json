@@ -12,6 +12,7 @@
 	"author": "Vasile Câmpeanu",
 	"license": "MIT",
 	"dependencies": {
+		"@types/axios": "^0.14.0",
 		"esbuild": "^0.18.17",
 		"esbuild-sass-plugin": "^2.10.0",
 		"lodash": "^4.17.21",

@@ -1,8 +1,6 @@
-// Obsidian
+
 import Weaver from "main";
 import { WeaverSettings } from "settings";
-
-// Interfaces
 import { IChatMessage, IConversation } from "interfaces/IThread";
 
 interface BodyParameters {
@@ -16,6 +14,8 @@ interface BodyParameters {
 
 export default class OpenAIRequestFormatter {
 	private readonly plugin: Weaver;
+	private readonly requestUrlBase: string = "https://api.openai.com/v1";
+	private readonly requestEndpoint: string = "/chat/completions";
 
 	constructor(plugin: Weaver) {
 		this.plugin = plugin;
@@ -29,47 +29,39 @@ export default class OpenAIRequestFormatter {
 				url: string,
 				method: string,
 				body: string,
-				headers: {[
-					key: string
-				]: string}
-			}
-		} = {}, conversation: IConversation, conversationHistory: IChatMessage[] = []) {
-		try {
-			const requestUrlBase = "https://api.openai.com/v1";
-			const requestUrl = `${requestUrlBase}/chat/completions`;
-
-			const bodyParameters: BodyParameters = {
-				frequency_penalty: parameters.frequencyPenalty,
-				max_tokens: parameters.maxTokens,
-				model: conversation.model ? conversation.model : parameters.engine,
-				temperature: parameters.temperature,
-				stream: true,
-				messages: []
-			};
-
-			bodyParameters.messages = conversationHistory.map((message: IChatMessage) => {
-				return { role: message.author.role, content: message.content.parts };
-			});
-
-			const mergedBodyParameters = { ...bodyParameters, ...additionalParameters?.bodyParameters };
-
-			const requestParameters = {
-				url: requestUrl,
-				method: "POST",
-				body: JSON.stringify(mergedBodyParameters),
 				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${parameters.apiKey}`,
-					...(process.env.OPENAI_ORGANIZATION && {
-						'OpenAI-Organization': process.env.OPENAI_ORGANIZATION,
-					})
+					[key: string]: string
 				}
-			};
+			}
+		} = {}, conversation: IConversation, conversationHistory: IChatMessage[] = []
+	) {
+		const requestUrl = `${this.requestUrlBase}${this.requestEndpoint}`;
+		const bodyParameters: BodyParameters = {
+			frequency_penalty: parameters.frequencyPenalty,
+			max_tokens: parameters.maxTokens,
+			model: conversation.model ? conversation.model : parameters.engine,
+			temperature: parameters.temperature,
+			stream: true,
+			messages: conversationHistory.map((message: IChatMessage) => {
+				return { role: message.author.role, content: message.content.parts };
+			})
+		};
 
-			return { ...requestParameters, ...additionalParameters?.requestParameters };
-		} catch (error) {
-			console.error('Error in prepareChatRequestParameters:', error);
-			throw error;
-		}
+		const mergedBodyParameters = { ...bodyParameters, ...additionalParameters?.bodyParameters };
+		const requestParameters = {
+			url: requestUrl,
+			method: "POST",
+			body: JSON.stringify(mergedBodyParameters),
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${parameters.apiKey}`,
+				...(process.env.OPENAI_ORGANIZATION && {
+					'OpenAI-Organization': process.env.OPENAI_ORGANIZATION,
+				})
+			}
+		};
+
+		return { ...requestParameters, ...additionalParameters?.requestParameters };
 	}
 }
+
