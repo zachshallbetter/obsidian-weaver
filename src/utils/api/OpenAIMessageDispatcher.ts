@@ -416,8 +416,6 @@ export class OpenAIMessageDispatcher {
 		// Create Selected Text Message
 		this.selectedTextMessage = this.createSelectedTextMessage(lastMessage!?.id, selectedText);
 
-		console.log(selectedText);
-
 		// Add info message to conversation
 		await this.updateConversation(this.selectedTextMessage, (contextMessages: IChatMessage[]) => {
 			this.setConversationSession((conversation: IConversation) => {

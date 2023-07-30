@@ -51,8 +51,6 @@ export default class OpenAIRequestFormatter {
 				return { role: message.author.role, content: message.content.parts };
 			});
 
-			console.log(bodyParameters.messages)
-
 			const mergedBodyParameters = { ...bodyParameters, ...additionalParameters?.bodyParameters };
 
 			const requestParameters = {

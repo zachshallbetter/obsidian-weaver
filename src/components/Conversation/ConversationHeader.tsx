@@ -182,7 +182,7 @@ export const ConversationHeader: React.FC<ConversationHeaderProps> = ({
 					</span>
 				)}
 			</div>
-			<div className="ow-user-actions-right">``
+			<div className="ow-user-actions-right">
 				{context ? (
 					<button className={`ow-btn-context ${context === true ? 'ow-context-enabled' : 'ow-context-disabled'}`} onClick={handleToggleContext}>
 						{context === true ? (

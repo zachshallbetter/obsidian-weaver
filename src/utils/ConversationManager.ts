@@ -199,8 +199,6 @@ export class ConversationManager {
 			await adapter.write(filePath, JSON.stringify(conversation, null, 4));
 			return;
 		}
-
-		console.log(`File with path: ${filePath} does not have the required identifier.`);
 	}
 
 	static async addMessageToConversation(plugin: Weaver, id: string, newMessage: IChatMessage): Promise<IChatMessage[]> {

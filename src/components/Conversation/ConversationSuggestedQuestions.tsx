@@ -18,7 +18,6 @@ export const ConversationSuggestedQuestions: React.FC<ConversationSuggestedQuest
 	onSubmit
 }) => {
 	useEffect(() => {
-		console.log(conversation);
 	}, [])
 
 	const questions = ['How can you help me?', 'What can you do?', 'What are your functions?'];
