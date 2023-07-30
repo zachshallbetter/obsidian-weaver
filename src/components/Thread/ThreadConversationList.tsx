@@ -3,7 +3,7 @@ import { List, CellMeasurer, CellMeasurerCache, AutoSizer } from "react-virtuali
 import { IConversation } from "interfaces/IThread";
 import Weaver from "main";
 import { ThreadListItemRenderer } from './ThreadListItemRenderer';
-import { filterConversations, groupBy, getSection, getItemSize } from '../../helpers/ThreadHelperFunctions';
+import { filterConversations, groupBy, getSection, getItemSize } from 'helpers/ThreadHelperFunctions';
 
 interface ThreadConversationListProps {
 	plugin: Weaver;

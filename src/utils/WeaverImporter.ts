@@ -1,9 +1,9 @@
 import Weaver from 'main';
 import { FileSystemAdapter, normalizePath } from 'obsidian';
 import { IConversation, IChatMessage } from '../interfaces/IThread';
-import { FileIOManager } from '../utils/api/FileIOManager';
-import { ThreadManager } from '../utils/api/ThreadManager';
-import { eventEmitter } from '../utils/api/EventEmitter';
+import { FileIOManager } from 'utils/FileIOManager';
+import { ThreadManager } from 'utils/ThreadManager';
+import { eventEmitter } from 'utils/EventEmitter';
 
 export class WeaverImporter {
 	static sanitizeTitle(title: string): string {

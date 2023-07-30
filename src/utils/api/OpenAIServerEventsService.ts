@@ -1,5 +1,5 @@
 
-import { OpenAIMessageDispatcher } from '../utils/api/OpenAIMessageDispatcher';
+import OpenAIMessageDispatcher from 'utils/api/OpenAIMessageDispatcher';
 
 class SSEService {
     private sseEndpoint: string = "https://sse.openai.com/endpoint"; // Default endpoint

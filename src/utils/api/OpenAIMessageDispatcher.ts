@@ -22,7 +22,7 @@ class OpenAIMessageDispatcher {
         this.addInfoMessageToConversation("An error occurred with the OpenAI service. Please try again.");
     }
 
-    private addInfoMessageToConversation(messageContent: string) {
+    public addInfoMessageToConversation(messageContent: string) {
         const infoMessage: IChatMessage = {
             content: messageContent,
             sender: "info",
@@ -61,7 +61,7 @@ class OpenAIMessageDispatcher {
         }
     }
 
-    private addMessageToConversation(message: IChatMessage) {
+    public addMessageToConversation(message: IChatMessage) {
         // Logic to add the message to the conversation
     }
 }

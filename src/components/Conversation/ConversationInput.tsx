@@ -2,7 +2,7 @@ import { IChatMessage, IConversation } from "interfaces/IThread";
 import Weaver from "main";
 import React, { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { ConversationManager } from "utils/ConversationManager";
-import { OpenAIMessageDispatcher } from "utils/api/OpenAIMessageDispatcher";
+import OpenAIMessageDispatcher from "utils/api/OpenAIMessageDispatcher";
 import { ConversationSelectedText } from "./ConversationSelectedText";
 import { eventEmitter } from "utils/EventEmitter";
 import { ConversationSuggestedQuestions } from "./ConversationSuggestedQuestions";

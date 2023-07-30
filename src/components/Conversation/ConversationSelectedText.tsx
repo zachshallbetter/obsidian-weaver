@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useRef } from 'react';
 import Weaver from "main";
-import { OpenAIMessageDispatcher } from 'utils/api/OpenAIMessageDispatcher';
+import OpenAIMessageDispatcher from 'utils/api/OpenAIMessageDispatcher';
 import { IChatMessage, IConversation } from 'interfaces/IThread';
 
 interface ConversationSelectedTextProps {

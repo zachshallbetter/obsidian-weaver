@@ -6,8 +6,8 @@ import { FileSystemAdapter, normalizePath } from 'obsidian';
 // Third-party modules
 import { IChatMessage, IConversation } from 'interfaces/IThread';
 import { v4 as uuidv4 } from 'uuid';
-import { ThreadManager } from '../utils/api/ThreadManager';
-import { FileIOManager } from '../utils/api/FileIOManager';
+import { ThreadManager } from 'utils/ThreadManager';
+import { FileIOManager } from 'utils/FileIOManager';
 import { normalize } from 'path';
 
 export class MigrationAssistant {

@@ -1,14 +1,13 @@
 import { Notice, Plugin, Workspace, WorkspaceLeaf } from 'obsidian';
 import { DEFAULT_SETTINGS, WeaverSettings, WeaverSettingTab } from './settings';
-import { WEAVER_THREAD_VIEW } from './constants';
 import { FileIOManager } from 'utils/FileIOManager';
 import { WeaverThreadView } from 'views/WeaverThreadView';
 import { eventEmitter } from 'utils/EventEmitter';
-import LocalJsonModal from 'modals/ImportModal';
+import LocalJsonModal from 'components/modals/ImportModal';
 import { MigrationAssistant } from 'utils/MigrationAssistant';
 import { ConversationManager } from 'utils/ConversationManager';
 import { EditorView } from "@codemirror/view";
-import { weaverEditor } from 'utils/editor/WeaverEditor';
+import { weaverEditor } from 'components/Editor/WeaverEditor';
 
 export default class Weaver extends Plugin {
 	public settings: WeaverSettings;
@@ -29,7 +28,7 @@ export default class Weaver extends Plugin {
 		await this.registerEventListeners();
 
 		// Register views
-		this.registerView(WEAVER_THREAD_VIEW, (leaf) => new WeaverThreadView(leaf, this));
+		this.registerView('weaver_thread_view', (leaf) => new WeaverThreadView(leaf, this));
 
 		// Bind user interface elements
 		await this.registerUserInteractions();
@@ -139,11 +138,11 @@ export default class Weaver extends Plugin {
 	}
 
 	private async openWeaverThreadView() {
-		const leafs = this.app.workspace.getLeavesOfType(WEAVER_THREAD_VIEW);
+		const leafs = this.app.workspace.getLeavesOfType('weaver_thread_view');
 
 		if (leafs.length == 0) {
 			const leaf = this.app.workspace.getRightLeaf(false);
-			await leaf.setViewState({ type: WEAVER_THREAD_VIEW });
+			await leaf.setViewState({ type: 'weaver_thread_view' });
 			this.app.workspace.revealLeaf(leaf);
 		} else {
 			leafs.forEach((leaf) => this.app.workspace.revealLeaf(leaf));

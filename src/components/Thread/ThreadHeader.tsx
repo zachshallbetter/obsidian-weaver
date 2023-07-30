@@ -1,6 +1,6 @@
 import { IConversation } from "interfaces/IThread";
 import Weaver from "main"
-import LocalJsonModal from "modals/ImportModal";
+import LocalJsonModal from "components/modals/ImportModal";
 import React, { useState } from "react"
 import { ConversationManager } from "utils/ConversationManager";
 

@@ -2,8 +2,8 @@ import { FileSystemAdapter, normalizePath } from 'obsidian';
 import Weaver from 'main';
 
 import { IConversation } from 'interfaces/IThread';
-import { ThreadManager } from '../utils/api/ThreadManager';
-import { ConversationManager } from '../utils/api/ConversationManager';
+import { ThreadManager } from 'utils/ThreadManager';
+import { ConversationManager } from 'utils/ConversationManager';
 
 export class WeaverHealthManager {
 	static async checkForExternalRename(plugin: Weaver): Promise<void> {

@@ -7,12 +7,11 @@ import React from 'react';
 import { createRoot, Root } from "react-dom/client";
 
 // Constants
-import { WEAVER_THREAD_VIEW } from '.../utils/api/constants';
 import { ThreadTabsManager } from 'components/Thread/ThreadTabsManager';
 
 export class WeaverThreadView extends ItemView {
 	private readonly plugin: Weaver;
-	private root: Root;
+	private root: Root; 
 
 	constructor(leaf: WorkspaceLeaf, plugin: Weaver) {
 		super(leaf);
@@ -47,7 +46,7 @@ export class WeaverThreadView extends ItemView {
 	}
 
 	getViewType(): string {
-		return WEAVER_THREAD_VIEW;
+		return 'weaver-thread-view';
 	}
 
 	constructWeaverThreadView() {
