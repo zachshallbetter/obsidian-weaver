@@ -21,7 +21,7 @@ const MessageRenderer: React.FC<MessageRendererProps> = ({
 	conversation,
 	plugin
 }) => {
-	const message: IChatMessage | undefined = conversation?.messages.find((msg) => msg.id === messageId);
+	const message: IChatMessage | undefined = conversation?.messages?.find((msg) => msg.id === messageId);
 	const conversationRenderer = new ConversationRenderer(conversation);
 
 	if (!message) {

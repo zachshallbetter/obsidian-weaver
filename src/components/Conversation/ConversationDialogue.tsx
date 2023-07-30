@@ -23,7 +23,7 @@ export const ConversationDialogue: React.FC<ConversationDialogueProps> = ({
 	const [showConversationEngineInfo, setShowConversationEngineInfo] = useState(plugin.settings.engineInfo);
 
 	const dialogueTimelineRef = useRef<HTMLDivElement>(null);
-	const rootMessage = conversation?.messages.find((msg) => msg.author.role === "system");
+	const rootMessage = conversation?.messages?.find((msg) => msg.author.role === "system");
 	const TIMEOUT_DELAY = 250;
 
 	useEffect(() => {
@@ -58,7 +58,8 @@ export const ConversationDialogue: React.FC<ConversationDialogueProps> = ({
 			const initialSelectedChildren: { [key: string]: number } = {};
 
 			const findPathToCurrentNode = (messageId: string, path: string[]): string[] => {
-				const message = conversation.messages.find(msg => msg.id === messageId);
+				const message = conversation?.messages?.find(msg => msg.id === messageId);
+
 				if (message) {
 					if (message.children && message.children.length > 0) {
 						for (let i = 0; i < message.children.length; i++) {
@@ -74,13 +75,13 @@ export const ConversationDialogue: React.FC<ConversationDialogueProps> = ({
 				return [];
 			}
 
-			findPathToCurrentNode(conversation.messages.find(msg => msg.author.role === "system")?.id || '', []);
+			findPathToCurrentNode(conversation?.messages?.find(msg => msg.author.role === "system")?.id || '', []);
 			setSelectedChildren(initialSelectedChildren);
 		}
 	}, [conversation]);
 
 	const changeSelectedChild = async (messageId: string | undefined, increment: number) => {
-		const message = conversation?.messages.find((msg) => msg.id === messageId);
+		const message = conversation?.messages?.find((msg) => msg.id === messageId);
 
 		if (message && message.children) {
 			let newIndex = (selectedChildren[messageId as string] || 0) + increment;
@@ -93,12 +94,12 @@ export const ConversationDialogue: React.FC<ConversationDialogueProps> = ({
 			setSelectedChildren({ ...selectedChildren, [messageId as string]: newIndex });
 
 			const findNewestMessage = (messageId: string): string => {
-				const message = conversation?.messages.find((msg) => msg.id === messageId);
+				const message = conversation?.messages?.find((msg) => msg.id === messageId);
 				let newestMessageId = messageId;
 				let newestDate = new Date(message?.create_time || 0);
 
 				message?.children?.forEach((childId) => {
-					const childMessage = conversation?.messages.find((msg) => msg.id === childId);
+					const childMessage = conversation?.messages?.find((msg) => msg.id === childId);
 					const childDate = new Date(childMessage?.create_time || 0);
 					const childNewestMessageId = findNewestMessage(childId);
 
@@ -180,7 +181,7 @@ export const ConversationDialogue: React.FC<ConversationDialogueProps> = ({
 			const updatedConversation = { ...conversation, mode: newMode };
 
 			// Update the system message content in the updated conversation
-			const systemPrompt = updatedConversation.messages.find(message => message.author.role === 'system');
+			const systemPrompt = updatedConversation?.messages?.find(message => message.author.role === 'system');
 
 			if (systemPrompt) {
 				systemPrompt.content.parts = systemPromptContent;
@@ -196,7 +197,7 @@ export const ConversationDialogue: React.FC<ConversationDialogueProps> = ({
 	return (
 		<div className={`ow-conversation-dialogue ${conversation?.context === false ? "ow-context" : ""}`} ref={dialogueTimelineRef}>
 			{
-				conversation?.messages?.length && conversation?.messages.length > 1 ? (
+				conversation?.messages?.length && conversation?.messages?.length > 1 ? (
 					rootMessage && (
 						<MessageRenderer
 							messageId={rootMessage.id}
@@ -326,7 +327,7 @@ export const ConversationDialogue: React.FC<ConversationDialogueProps> = ({
 									</div>
 									<div className="ow-custom-mode-selection">
 										<div>
-											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-sparkle"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.287 1.288L3 12l5.8 1.9a2 2 0 0 1 1.288 1.287L12 21l1.9-5.8a2 2 0 0 1 1.287-1.288L21 12l-5.8-1.9a2 2 0 0 1-1.288-1.287Z"/></svg>
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-sparkle"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.287 1.288L3 12l5.8 1.9a2 2 0 0 1 1.288 1.287L12 21l1.9-5.8a2 2 0 0 1 1.287-1.288L21 12l-5.8-1.9a2 2 0 0 1-1.288-1.287Z"/></svg>
 											<span>Styles</span>
 										</div>
 										<select>
@@ -335,7 +336,7 @@ export const ConversationDialogue: React.FC<ConversationDialogueProps> = ({
 											<option value="option3">Option 3</option>
 										</select>
 										<button>
-											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
 										</button>
 									</div>
 								</div>

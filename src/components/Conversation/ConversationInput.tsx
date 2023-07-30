@@ -82,7 +82,7 @@ export const ConversationInput: React.FC<ConversationInput> = ({
 
 		// Function to find path to current node and populate selectedChildren.
 		const findPathToCurrentNode = (messageId: string, path: string[]): string[] => {
-			const message = conversation.messages.find(msg => msg.id === messageId);
+			const message = conversation?.messages?.find(msg => msg.id === messageId);
 
 			if (message) {
 				if (message.children && message.children.length > 0) {
@@ -100,11 +100,11 @@ export const ConversationInput: React.FC<ConversationInput> = ({
 		}
 
 		// Start finding path from the root message.
-		findPathToCurrentNode(conversation.messages.find(msg => msg.author.role === "system")?.id || '', []);
+		findPathToCurrentNode(conversation?.messages?.find(msg => msg.author.role === "system")?.id || '', []);
 
 		// Function to get messages to be rendered.
 		const deriveRenderedMessages = (messageId: string): IChatMessage[] => {
-			const message: IChatMessage | undefined | null = conversation.messages.find((msg) => msg.id === messageId);
+			const message: IChatMessage | undefined | null = conversation?.messages?.find((msg) => msg.id === messageId);
 
 			if (!message) {
 				return [];
@@ -119,7 +119,7 @@ export const ConversationInput: React.FC<ConversationInput> = ({
 			];
 		};
 
-		const rootMessage = conversation.messages.find((msg) => msg.author.role === "system");
+		const rootMessage = conversation?.messages?.find((msg) => msg.author.role === "system");
 
 		return rootMessage ? deriveRenderedMessages(rootMessage.id) : [];
 	};
@@ -178,7 +178,10 @@ export const ConversationInput: React.FC<ConversationInput> = ({
 		setConversationSession(newConversation);
 	}
 
-	const lastAssistantMessage = conversation?.messages.slice().reverse().find(message => message.author.role === 'assistant');
+	const lastAssistantMessage = (conversation && conversation?.messages ? conversation?.messages : [])
+		.slice()
+		.reverse()
+		.find(message => message && message.author && message.author.role === 'assistant');
 
 	return (
 		<div className="ow-conversation-input-area">
@@ -195,7 +198,7 @@ export const ConversationInput: React.FC<ConversationInput> = ({
 						getRenderedMessages={getRenderedMessages}
 					/>
 				) : (
-					conversation!?.messages.length >= 2 ? (
+					(conversation && conversation?.messages && conversation?.messages?.length >= 2) ? (
 						lastAssistantMessage && lastAssistantMessage.content.content_type === 'question' ? (
 							null
 						) : (

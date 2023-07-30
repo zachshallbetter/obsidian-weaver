@@ -60,12 +60,12 @@ export class MigrationAssistant {
 					}
 				});
 	
-				const conversationsPromises = oldData.threads[0].conversations.map(async (conversation: { messages: unknown[]; title: string; timestamp: any; }) => {
+				const conversationsPromises = oldData.threads[0].conversations?.map(async (conversation: { messages: unknown[]; title: string; timestamp: any; }) => {
 					let previousMessageId: string = uuidv4();
 					let previousMessage: IChatMessage | null = null;
 					let nextMessageId = "";
 	
-					const newMessages: IChatMessage[] = conversation.messages.map((message: any, index: number) => {
+					const newMessages: IChatMessage[] = conversation?.messages?.map((message: any, index: number) => {
 						const messageId = uuidv4();
 						const creationTime = new Date(message.timestamp).toISOString();
 	

@@ -25,7 +25,8 @@ export const ConversationSuggestedQuestions: React.FC<ConversationSuggestedQuest
 	const operations = ['Explain', 'Revise', 'Sumarize', 'Expand'];
 
 	// Find the last assistant message
-	const lastAssistantMessage = conversation?.messages.slice().reverse().find(message => message.author.role === 'assistant');
+	const lastAssistantMessage = (conversation?.messages || []).slice().reverse().find(message => message.author && message.author.role === 'assistant');
+
 
 	const handleOperation = (operation: string) => {
 		// Create a fake event
@@ -37,7 +38,7 @@ export const ConversationSuggestedQuestions: React.FC<ConversationSuggestedQuest
 	}
 
 	return (
-		conversation!?.messages.length < 2 ? (
+		conversation!?.messages?.length < 2 ? (
 			<div className="ow-conversation-questions">
 				<div className="ow-conversation-questions-inner">
 					{questions.map((question, index) =>

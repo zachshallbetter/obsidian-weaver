@@ -14,9 +14,9 @@ export const filterConversations = (
 
 	return conversations.filter((conversation) => {
 		if (searchField === "title") {
-			return conversation.title.toLowerCase().includes(searchTerm.toLowerCase());
+			return conversation?.title.toLowerCase().includes(searchTerm.toLowerCase());
 		} else if (searchField === "messages") {
-			return conversation.messages.some((message) =>
+			return conversation?.messages?.some((message) =>
 				(message.content as unknown as string).toLowerCase().includes(searchTerm.toLowerCase())
 			);
 		}

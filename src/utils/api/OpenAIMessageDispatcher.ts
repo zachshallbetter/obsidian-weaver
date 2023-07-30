@@ -35,7 +35,7 @@ export class OpenAIMessageDispatcher {
 
 	private createUserMessage(inputText: string, shouldSetInfoMessageAsParent: boolean): IChatMessage {
 		const currentNode = this.conversation?.currentNode;
-		const currentMessage: IChatMessage | undefined = this.conversation?.messages.find((message) => message.id === currentNode);
+		const currentMessage: IChatMessage | undefined = this.conversation?.messages?.find((message) => message.id === currentNode);
 		let userMessageParentId: string = currentMessage?.id ?? uuidv4();
 
 		// If the condition is true, set the parent as the info message
@@ -187,7 +187,7 @@ export class OpenAIMessageDispatcher {
 
 	public async updateCurrentAssistantMessageContent(newContent: string) {
 		this.setConversationSession((conversation: IConversation) => {
-			const userMessageIndex = conversation?.messages.findIndex((message) => {
+			const userMessageIndex = conversation?.messages?.findIndex((message) => {
 				if (!message || !this.userMessage) {
 					console.error('One or more objects are undefined:', { message, userMessage: this.userMessage });
 					return false;
@@ -224,7 +224,7 @@ export class OpenAIMessageDispatcher {
 	) {
 		setIsLoading(true)
 
-		const shouldAddInfoMessage = this.conversation?.messages.length === 1;
+		const shouldAddInfoMessage = this.conversation?.messages?.length === 1;
 
 		if (shouldAddInfoMessage) {
 			const systemMessage = this.conversation!.messages[0];
@@ -267,7 +267,7 @@ export class OpenAIMessageDispatcher {
 		let contextMessages: IChatMessage[] = [];
 
 		if (this.conversation?.context === true) {
-			const rootMessage = this.conversation?.messages.find((msg) => msg.author.role === "system");
+			const rootMessage = this.conversation?.messages?.find((msg) => msg.author.role === "system");
 
 			let currentNodeMessages: IChatMessage[] = rootMessage ? getRenderedMessages(this.conversation) : [];
 
@@ -283,7 +283,7 @@ export class OpenAIMessageDispatcher {
 		this.loadingAssistantMessage = this.createAssistantLoadingMessage(this.userMessage.id);
 
 		this.setConversationSession((conversation: IConversation) => {
-			const userMessageIndex = conversation?.messages.findIndex((message) => {
+			const userMessageIndex = conversation?.messages?.findIndex((message) => {
 				if (!message || !this.userMessage) {
 					console.error('One or more objects are undefined:', { message, userMessage: this.userMessage });
 					return false;
@@ -352,13 +352,13 @@ export class OpenAIMessageDispatcher {
 		if (this.conversation?.context === false) {
 			filteredMessages = [this.userMessage];
 		} else {
-			filteredMessages.splice(filteredMessages.length - 1, 1);
+			filteredMessages?.splice(filteredMessages?.length - 1, 1);
 		}
 
 		this.loadingAssistantMessage = this.createAssistantLoadingMessage(this.userMessage!.id);
 
 		this.setConversationSession((conversation: IConversation) => {
-			const userMessageIndex = conversation?.messages.findIndex((message) => {
+			const userMessageIndex = conversation?.messages?.findIndex((message) => {
 				if (!message || !this.userMessage) {
 					console.error('One or more objects are undefined:', { message, userMessage: this.userMessage });
 					return false;

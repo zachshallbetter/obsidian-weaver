@@ -76,10 +76,10 @@ export const ThreadListItem: React.FC<ThreadListItemProps> = ({
 					<div className="ow-title-wrapper">
 						<span className="ow-title">
 							<span>
-								{conversation.title}
+								{conversation?.title}
 							</span>
 						</span>
-						<span className="ow-date">{conversation.creationDate.substring(0, 10)}</span>
+						<span className="ow-date">{conversation?.creationDate?.substring(0, 10)}</span>
 					</div>
 					<div className={`ow-user-actions ${showDeleteConfirmation === true ? 'show' : ''}`}>
 						{showDeleteConfirmation === false ? (
@@ -94,7 +94,7 @@ export const ThreadListItem: React.FC<ThreadListItemProps> = ({
 						) : (
 							<div className="delete-confirmation-dialog" ref={deleteConfirmationDialogRef}>
 								<button className="ow-btn-confirm" onClick={() => {
-									handleDeleteConfirmed(conversation.id)
+									handleDeleteConfirmed(conversation?.id)
 								}}>
 									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
 								</button>
@@ -113,7 +113,7 @@ export const ThreadListItem: React.FC<ThreadListItemProps> = ({
 						</button>
 					</div>
 					<div className={`ow-messages-count ${showDeleteConfirmation === true ? 'show' : ''}`}>
-						{conversation.messages.length - 1}
+						{conversation?.messages?.length - 1}
 					</div>
 				</div>
 			</div>

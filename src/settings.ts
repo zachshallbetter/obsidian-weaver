@@ -105,9 +105,13 @@ export class WeaverSettingTab extends PluginSettingTab {
 				cb.setValue(this.plugin.settings.engine);
 				cb.onChange(async (value) => {
 					this.plugin.settings.engine = value;
-					// Update maxTokens based on the selected model
 					this.plugin.settings.maxTokens = DEFAULT_TOKENS_FOR_MODELS[value];
 					await this.plugin.saveSettings();
+					// Update the maxTokens input field to reflect the updated value
+					const maxTokensInput = document.querySelector("input[name='Maximum Tokens']") as HTMLInputElement | null;
+					if (maxTokensInput) {
+						maxTokensInput.value = this.plugin.settings.maxTokens.toString();
+					}
 				});
 			});
 

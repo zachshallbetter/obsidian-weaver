@@ -108,14 +108,14 @@ export class ConversationManager {
 			const fileContent = await adapter.read(filePath);
 			const conversation = JSON.parse(fileContent) as IConversation;
 
-			if (conversation.id === updatedConversation.id && conversation.identifier === 'obsidian-weaver') {
+			if (conversation?.id === updatedConversation.id && conversation?.identifier === 'obsidian-weaver') {
 				// Validate the updated conversation object
-				if (!updatedConversation.id || !updatedConversation.identifier || !updatedConversation.currentNode || !updatedConversation.messages) {
+				if (!updatedConversation?.id || !updatedConversation?.identifier || !updatedConversation.currentNode || !updatedConversation?.messages) {
 					console.error('The updated conversation is missing required fields.');
 					throw new Error('The updated conversation is missing required fields.');
 				}
 
-				updatedConversation.messages = conversation.messages;
+				updatedConversation.messages = conversation?.messages;
 
 				// Write the updated conversation back to the file
 				await adapter.write(filePath, JSON.stringify(updatedConversation, null, 4));
@@ -222,10 +222,10 @@ export class ConversationManager {
 				}
 
 				// Add the new message to the conversation
-				conversation.messages.push(newMessage);
+				conversation?.messages?.push(newMessage);
 
 				// Update parent message's children array
-				const parentMessage = conversation.messages.find(message => message.id === newMessage.parent);
+				const parentMessage = conversation?.messages?.find(message => message.id === newMessage.parent);
 
 				if (parentMessage) {
 					parentMessage.children.push(newMessage.id);
@@ -262,7 +262,7 @@ export class ConversationManager {
 
 			if (conversation.id === conversationId && conversation.identifier === 'obsidian-weaver') {
 				// Find the target message in the conversation's messages
-				const targetMessage = conversation.messages.find(message => message.id === messageId);
+				const targetMessage = conversation?.messages?.find(message => message.id === messageId);
 
 				if (!targetMessage) {
 					console.error('Target message not found in the conversation.');
@@ -347,7 +347,7 @@ export class ConversationManager {
 	
 			if (conversation.id === id && conversation.identifier === 'obsidian-weaver') {
 				// Find the system prompt in the conversation's messages
-				const systemPrompt = conversation.messages.find(message => message.author.role === 'system');
+				const systemPrompt = conversation?.messages?.find(message => message.author.role === 'system');
 	
 				if (!systemPrompt) {
 					console.error('System prompt not found in the conversation.');
