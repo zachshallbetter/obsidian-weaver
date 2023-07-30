@@ -1,6 +1,6 @@
 import Weaver from 'main';
 import { FileSystemAdapter, normalizePath } from 'obsidian';
-import { IConversation, IChatMessage } from '../interfaces/IThread';
+import { IConversation, IChatMessage } from '../typings/IThread';
 import { FileIOManager } from 'utils/FileIOManager';
 import { ThreadManager } from 'utils/ThreadManager';
 import { eventEmitter } from 'utils/EventEmitter';

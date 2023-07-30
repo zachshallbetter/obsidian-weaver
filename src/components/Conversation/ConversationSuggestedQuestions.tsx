@@ -1,4 +1,4 @@
-import { IConversation } from "interfaces/IThread";
+import { IConversation } from "typings/IThread";
 import Weaver from "main";
 import React, { useEffect } from "react";
 

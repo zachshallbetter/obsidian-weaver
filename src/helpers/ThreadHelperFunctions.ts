@@ -1,4 +1,4 @@
-import { IConversation } from "interfaces/IThread";
+import { IConversation } from "typings/IThread";
 import Weaver from "main";
 
 const sectionHeaderHeight = 25;

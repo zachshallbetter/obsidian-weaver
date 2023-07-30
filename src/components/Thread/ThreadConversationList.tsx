@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { List, CellMeasurer, CellMeasurerCache, AutoSizer } from "react-virtualized";
-import { IConversation } from "interfaces/IThread";
+import { IConversation } from "typings/IThread";
 import Weaver from "main";
 import { ThreadListItemRenderer } from './ThreadListItemRenderer';
 import { filterConversations, groupBy, getSection, getItemSize } from 'helpers/ThreadHelperFunctions';

@@ -4,7 +4,7 @@ import Weaver from 'main';
 import { FileSystemAdapter, normalizePath } from 'obsidian';
 
 // Third-party modules
-import { IChatMessage, IConversation } from 'interfaces/IThread';
+import { IChatMessage, IConversation } from 'typings/IThread';
 import { v4 as uuidv4 } from 'uuid';
 import { ThreadManager } from 'utils/ThreadManager';
 import { FileIOManager } from 'utils/FileIOManager';

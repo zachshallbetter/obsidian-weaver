@@ -1,7 +1,7 @@
 // ThreadListItemRenderer.tsx
 import React from 'react';
 import { ThreadListItem } from "./ThreadListItem";
-import { IConversation } from "interfaces/IThread";
+import { IConversation } from "typings/IThread";
 import Weaver from "main";
 
 interface ItemRendererProps {

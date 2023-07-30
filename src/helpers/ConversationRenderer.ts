@@ -1,4 +1,4 @@
-import { IChatMessage, IConversation } from "interfaces/IThread";
+import { IChatMessage, IConversation } from "typings/IThread";
 
 export class ConversationRenderer {
 	private selectedChildren: { [key: string]: number } = {};

@@ -3,7 +3,7 @@ import { DEFAULT_SETTINGS, WeaverSettings, WeaverSettingTab } from './settings';
 import { FileIOManager } from 'utils/FileIOManager';
 import { WeaverThreadView } from 'views/WeaverThreadView';
 import { eventEmitter } from 'utils/EventEmitter';
-import LocalJsonModal from 'components/modals/ImportModal';
+import LocalJsonModal from 'components/Modals/ImportModal';
 import { MigrationAssistant } from 'utils/MigrationAssistant';
 import { ConversationManager } from 'utils/ConversationManager';
 import { EditorView } from "@codemirror/view";

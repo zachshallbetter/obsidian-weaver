@@ -1,4 +1,4 @@
-import { IChatMessage, IConversation } from 'interfaces/IThread';
+import { IChatMessage, IConversation } from 'typings/IThread';
 import Weaver from 'main';
 import { FileSystemAdapter } from 'obsidian';
 import { v4 as uuidv4 } from 'uuid';

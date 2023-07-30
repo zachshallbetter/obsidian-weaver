@@ -14,6 +14,11 @@ const stylesPath = path.join(__dirname, "src/styles/styles.scss");
 function cleanDistDir() {
 	const distDir = path.join(__dirname, "dist");
 	try {
+		if (!fs.existsSync(distDir)) {
+			fs.mkdirSync(distDir);
+			console.log("Dist directory created.");
+			return;
+		}
 		const files = fs.readdirSync(distDir);
 		files.forEach(file => {
 			const filePath = path.join(distDir, file);
@@ -25,6 +30,7 @@ function cleanDistDir() {
 		throw err;
 	}
 }
+
 function compileSass() {
 	return new Promise((resolve, reject) => {
 		sass.render({ file: stylesPath }, (err, result) => {

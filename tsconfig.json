@@ -4,6 +4,7 @@
 		"allowJs": false,
 		"allowSyntheticDefaultImports": true,
 		"baseUrl": "src",
+		"outDir": "./dist",
 		"esModuleInterop": true,
 		"importHelpers": true,
 		"inlineSourceMap": true,
@@ -23,7 +24,15 @@
 		"noImplicitAny": false,
 		"noEmitOnError": false,
 		"strictNullChecks": true,
-		"outDir": "./dist",
+		"typeRoots": [
+			"node_modules/@types",
+			"typings"
+		],
+		"types": [
+			"node",
+			"react",
+			"react-dom",
+		],
 	},
 	"include": [
 		"**/*.ts",

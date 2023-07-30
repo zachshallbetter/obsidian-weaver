@@ -1,5 +1,5 @@
 import React from 'react';
-import { IChatMessage, IConversation } from 'interfaces/IThread';
+import { IChatMessage, IConversation } from 'typings/IThread';
 import { ConversationMessageBubble } from "./ConversationMessageBubble";
 import { ConversationRenderer } from "helpers/ConversationRenderer";
 import Weaver from 'main';

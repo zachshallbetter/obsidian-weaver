@@ -1,7 +1,7 @@
 
 import Weaver from "main";
 import OpenAIRequestFormatter from "./OpenAIRequestFormatter";
-import { IChatMessage, IConversation } from "interfaces/IThread";
+import { IChatMessage, IConversation } from "typings/IThread";
 import OpenAIRequestManager from "./OpenAIRequestManager";
 
 export default class OpenAIContentProvider {

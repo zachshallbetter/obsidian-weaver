@@ -1,4 +1,4 @@
-import { IChatMessage, IConversation } from "interfaces/IThread";
+import { IChatMessage, IConversation } from "typings/IThread";
 import Weaver from "main";
 import React, { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { ConversationManager } from "utils/ConversationManager";

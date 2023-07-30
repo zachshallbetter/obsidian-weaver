@@ -1,5 +1,5 @@
 
-import { IChatMessage } from 'interfaces/IThread';
+import { IChatMessage } from 'typings/IThread';
 
 class OpenAIMessageDispatcher {
     private apiEndpoint: string = "https://api.openai.com";

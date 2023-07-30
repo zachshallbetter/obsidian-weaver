@@ -5,7 +5,7 @@ import { Thread } from "./Thread"
 
 import { eventEmitter } from 'utils/EventEmitter';
 import { Conversation } from "components/Conversation/Conversation";
-import { IConversation } from "interfaces/IThread";
+import { IConversation } from "typings/IThread";
 import { ThreadManager } from "utils/ThreadManager";
 
 interface ThreadTabsManagerProps {

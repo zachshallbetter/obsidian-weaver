@@ -1,4 +1,4 @@
-import { IChatMessage } from 'interfaces/IThread';
+import { IChatMessage } from 'typings/IThread';
 import Weaver from 'main';
 import { Component, MarkdownRenderer } from 'obsidian';
 import React, { useEffect, useState } from 'react';

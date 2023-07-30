@@ -1,7 +1,7 @@
 
 import Weaver from "main";
 import { WeaverSettings } from "settings";
-import { IChatMessage, IConversation } from "interfaces/IThread";
+import { IChatMessage, IConversation } from "typings/IThread";
 
 interface BodyParameters {
 	messages: { role: string; content: string; }[];
