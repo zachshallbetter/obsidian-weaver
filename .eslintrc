@@ -1,44 +1,55 @@
 {
-	"root": true,
-	"parser": "@typescript-eslint/parser",
-	"env": {
-		"node": true,
-		"browser": true,
-		"es6": true
-	},
-	"plugins": [
-		"@typescript-eslint",
-		"react"
-	],
-	"extends": [
-		"eslint:recommended",
-		"plugin:@typescript-eslint/eslint-recommended",
-		"plugin:@typescript-eslint/recommended",
-		"plugin:react/recommended"
-	],
-	"parserOptions": {
-		"ecmaVersion": 2018,
-		"sourceType": "module",
-		"ecmaFeatures": {
-			"jsx": true
-		}
-	},
-	"settings": {
-		"react": {
-			"version": "detect"
-		}
-	},
-	"rules": {
-		"no-unused-vars": "off",
-		"@typescript-eslint/no-unused-vars": [
-			"error",
-			{
-				"args": "none"
-			}
-		],
-		"@typescript-eslint/ban-ts-comment": "off",
-		"no-prototype-builtins": "off",
-		"@typescript-eslint/no-empty-function": "off",
-		"react/react-in-jsx-scope": "off"
-	}
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "env": {
+        "node": true,
+        "browser": true,
+        "es6": true
+    },
+    "ignorePatterns": [
+        "node_modules",
+        "dist",
+        "main.js"
+    ],
+    "plugins": [
+        "@typescript-eslint",
+        "react",
+        "editorconfig"
+    ],
+    "rules": {
+        "editorconfig/indent": ["error", "tab"],
+        "editorconfig/eol-last": ["error", "always"],
+        "editorconfig/newline-after-at": ["error", "always"],
+        "editorconfig/no-trailing-spaces": ["error", { "skipBlankLines": true }],
+        "editorconfig/trim-trailing-spaces": ["error", { "ignoreEmptyLines": true }],
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": [
+            "error",
+            {
+                "args": "none"
+            }
+        ],
+        "@typescript-eslint/ban-ts-comment": "off",
+        "no-prototype-builtins": "off",
+        "@typescript-eslint/no-empty-function": "off",
+        "react/react-in-jsx-scope": "off"
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react/recommended"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    }
 }
