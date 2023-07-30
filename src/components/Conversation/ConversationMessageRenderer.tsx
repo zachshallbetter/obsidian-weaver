@@ -21,7 +21,7 @@ const MessageRenderer: React.FC<MessageRendererProps> = ({
 	conversation,
 	plugin
 }) => {
-	const message: IChatMessage | undefined = conversation?.messages.find((msg) => msg.id === messageId);
+	const message: IChatMessage | undefined = conversation?.messages?.find((msg) => msg.id === messageId);
 	const conversationRenderer = new ConversationRenderer(conversation);
 
 	if (!message) {
@@ -32,7 +32,7 @@ const MessageRenderer: React.FC<MessageRendererProps> = ({
 	const selectedChildIndex = selectedChildren[messageId] || 0;
 	const selectedPreviousChildIndex = selectedChildren[previousMessage?.id as string] || 0;
 
-	if (message.role === "system") {
+	if (message.author.role === "system") {
 		return (
 			<MessageRenderer
 				messageId={childIds[selectedChildIndex]}
@@ -47,8 +47,8 @@ const MessageRenderer: React.FC<MessageRendererProps> = ({
 	const messagesRendered = conversationRenderer.getRenderedMessages();
 	const reverseMessages = messagesRendered.reverse();
 
-	const lastUserMessage = reverseMessages.find(message => message.role === 'user');
-	const lastAssistantMessage = reverseMessages.find(message => message.role === 'assistant');
+	const lastUserMessage = reverseMessages.find(message => message.author.role === 'user');
+	const lastAssistantMessage = reverseMessages.find(message => message.author.role === 'assistant');
 
 	let contextDisplay = false;
 
@@ -65,6 +65,7 @@ const MessageRenderer: React.FC<MessageRendererProps> = ({
 				selectedChild={selectedPreviousChildIndex}
 				onSelectedChildChange={(increment: number) => changeSelectedChild(previousMessage?.id, increment)}
 				contextDisplay={contextDisplay}
+				mode={conversation!?.mode}
 			/>
 			{childIds[selectedChildIndex] && (
 				<MessageRenderer

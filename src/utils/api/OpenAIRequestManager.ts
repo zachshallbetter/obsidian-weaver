@@ -1,4 +1,6 @@
 import { IChatMessage, IConversation } from "interfaces/IThread";
+
+// @ts-expect-error
 import { SSE } from "../../js/sse/sse";
 import { v4 as uuidv4 } from 'uuid';
 import Weaver from "main";
@@ -23,16 +25,24 @@ export class OpenAIRequestManager {
 		conversation: IConversation
 	): IChatMessage {
 		return {
-			children: [],
-			content: content,
-			context: false,
-			creationDate: new Date().toISOString(),
 			id: uuidv4(),
-			mode: conversation.mode,
-			model: conversation.model,
-			role: 'assistant',
-			parent: userMessage.id
-		};
+			parent: userMessage.id,
+			children: [],
+			message_type: 'chat',
+			status: 'finished_successfully',
+			context: false,
+			create_time: new Date().toISOString(),
+			update_time: new Date().toISOString(),
+			author: {
+				role: 'assistant',
+				ai_model: conversation.model,
+				mode: conversation.mode,
+			},
+			content: {
+				content_type: 'text',
+				parts: content
+			},
+		};		
 	}
 
 	private onMessage = async (

@@ -3,9 +3,9 @@ import Weaver from "main";
 import React, { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { ConversationManager } from "utils/ConversationManager";
 import { OpenAIMessageDispatcher } from "utils/api/OpenAIMessageDispatcher";
-import OpenAIContentProvider from "utils/api/OpenAIContentProvider";
-import { OpenAIRequestManager } from "utils/api/OpenAIRequestManager";
-import { v4 as uuidv4 } from 'uuid';
+import { ConversationSelectedText } from "./ConversationSelectedText";
+import { eventEmitter } from "utils/EventEmitter";
+import { ConversationSuggestedQuestions } from "./ConversationSuggestedQuestions";
 
 interface ConversationInput {
 	plugin: Weaver;
@@ -25,6 +25,13 @@ export const ConversationInput: React.FC<ConversationInput> = ({
 	const [isPinned, setIsPinned] = useState<Boolean>(false);
 	const [showButton, setShowButton] = useState(true);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [selectedText, setSelectedText] = useState("");
+
+	useEffect(() => {
+		const handleTextSelected = (text: string) => setSelectedText(text);
+		eventEmitter.on("textSelected", handleTextSelected);
+		return () => eventEmitter.off("textSelected", handleTextSelected);
+	}, []);
 
 	// Create a ref for your dispatcher
 	const messageDispatcherRef = useRef<OpenAIMessageDispatcher | null>(null);
@@ -75,7 +82,7 @@ export const ConversationInput: React.FC<ConversationInput> = ({
 
 		// Function to find path to current node and populate selectedChildren.
 		const findPathToCurrentNode = (messageId: string, path: string[]): string[] => {
-			const message = conversation.messages.find(msg => msg.id === messageId);
+			const message = conversation?.messages?.find(msg => msg.id === messageId);
 
 			if (message) {
 				if (message.children && message.children.length > 0) {
@@ -93,11 +100,11 @@ export const ConversationInput: React.FC<ConversationInput> = ({
 		}
 
 		// Start finding path from the root message.
-		findPathToCurrentNode(conversation.messages.find(msg => msg.role === "system")?.id || '', []);
+		findPathToCurrentNode(conversation?.messages?.find(msg => msg.author.role === "system")?.id || '', []);
 
 		// Function to get messages to be rendered.
 		const deriveRenderedMessages = (messageId: string): IChatMessage[] => {
-			const message: IChatMessage | undefined | null = conversation.messages.find((msg) => msg.id === messageId);
+			const message: IChatMessage | undefined | null = conversation?.messages?.find((msg) => msg.id === messageId);
 
 			if (!message) {
 				return [];
@@ -112,15 +119,17 @@ export const ConversationInput: React.FC<ConversationInput> = ({
 			];
 		};
 
-		const rootMessage = conversation.messages.find((msg) => msg.role === "system");
+		const rootMessage = conversation?.messages?.find((msg) => msg.author.role === "system");
 
 		return rootMessage ? deriveRenderedMessages(rootMessage.id) : [];
 	};
 
-	const onSubmit = async (event: React.FormEvent) => {
+	const onSubmit = async (event: React.FormEvent, overrideText?: string) => {
 		event.preventDefault();
 
-		if (inputText.trim() === '') {
+		let textToUse = overrideText ? overrideText : inputText;
+
+		if (textToUse.trim() === '') {
 			return;
 		}
 
@@ -132,10 +141,9 @@ export const ConversationInput: React.FC<ConversationInput> = ({
 			updateConversation
 		);
 
-		// use the ref's current value
 		messageDispatcherRef.current.handleSubmit(
 			getRenderedMessages,
-			inputText,
+			textToUse,
 			setIsLoading
 		);
 
@@ -170,29 +178,53 @@ export const ConversationInput: React.FC<ConversationInput> = ({
 		setConversationSession(newConversation);
 	}
 
+	const lastAssistantMessage = (conversation && conversation?.messages ? conversation?.messages : [])
+		.slice()
+		.reverse()
+		.find(message => message && message.author && message.author.role === 'assistant');
+
 	return (
 		<div className="ow-conversation-input-area">
-			<div className="ow-input-tool-bar">
-				{
-					isLoading === true ? (
-						<button
-							onClick={onCancelRequest}
-							className="ow-btn-stop-request"
-						>
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
-							<span>STOP</span>
-						</button>
-					) : conversation!?.messages.length > 2 ? (
-						<button
-							onClick={handleRegenerateMessage}
-							className="ow-btn-stop-request"
-						>
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-refresh-cw"><path d="M21 2v6h-6"></path><path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path><path d="M3 22v-6h6"></path><path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path></svg>
-							<span>REGENERATE</span>
-						</button>
+			<ConversationSuggestedQuestions plugin={plugin} conversation={conversation} onSubmit={onSubmit} />
+			{
+				selectedText !== "" ? (
+					<ConversationSelectedText
+						plugin={plugin}
+						selectedText={selectedText}
+						setSelectedText={setSelectedText}
+						conversation={conversation}
+						setConversationSession={setConversationSession}
+						updateConversation={updateConversation}
+						getRenderedMessages={getRenderedMessages}
+					/>
+				) : (
+					(conversation && conversation?.messages && conversation?.messages?.length >= 2) ? (
+						lastAssistantMessage && lastAssistantMessage.content.content_type === 'question' ? (
+							null
+						) : (
+							<div className="ow-input-tool-bar">
+								{isLoading === true ? (
+									<button
+										onClick={onCancelRequest}
+										className="ow-btn-stop-request"
+									>
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+										<span>STOP</span>
+									</button>
+								) : (
+									<button
+										onClick={handleRegenerateMessage}
+										className="ow-btn-stop-request"
+									>
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-refresh-cw"><path d="M21 2v6h-6"></path><path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path><path d="M3 22v-6h6"></path><path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path></svg>
+										<span>REGENERATE</span>
+									</button>
+								)}
+							</div>
+						)
 					) : null
-				}
-			</div>
+				)
+			}
 			<form
 				className="ow-conversation-input-form"
 				onSubmit={onSubmit}

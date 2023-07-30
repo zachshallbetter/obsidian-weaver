@@ -5,6 +5,20 @@ const sectionHeaderHeight = 25;
 const itemHeight = 50;
 const compactItemHeight = 40;
 
+export const groupBy = (list, keyGetter) => {
+    const map = new Map();
+    list.forEach((item) => {
+        const key = keyGetter(item);
+        const collection = map.get(key);
+        if (!collection) {
+            map.set(key, [item]);
+        } else {
+            collection.push(item);
+        }
+    });
+    return map;
+}
+
 export const filterConversations = (
 	conversations: IConversation[],
 	searchTerm: string,
@@ -14,10 +28,10 @@ export const filterConversations = (
 
 	return conversations.filter((conversation) => {
 		if (searchField === "title") {
-			return conversation.title.toLowerCase().includes(searchTerm.toLowerCase());
+			return conversation?.title.toLowerCase().includes(searchTerm.toLowerCase());
 		} else if (searchField === "messages") {
-			return conversation.messages.some((message) =>
-				message.content.toLowerCase().includes(searchTerm.toLowerCase())
+			return conversation?.messages?.some((message) =>
+				(message.content as unknown as string).toLowerCase().includes(searchTerm.toLowerCase())
 			);
 		}
 
@@ -37,4 +51,4 @@ export const getSection = (creationDate: string) => {
 	return "Older";
 };
 
-export const getItemSize = (plugin: Weaver, item: any) => (item.isSectionHeader ? sectionHeaderHeight : plugin.settings.threadViewCompactMode === true ? compactItemHeight : itemHeight);
+export const getItemSize = (plugin: Weaver, item: { isSectionHeader: boolean }) => (item.isSectionHeader ? sectionHeaderHeight : plugin.settings.threadViewCompactMode === true ? compactItemHeight : itemHeight);

@@ -6,12 +6,49 @@
 	.ow-icon
 	{
 		align-self: center;
+
 		svg
 		{
 			color: var(--interactive-accent);
 			fill: var(--interactive-accent);
 			width: 11px;				
 			height: 11px;	
+		}
+	}
+
+	&.ow-mode-creative
+	{
+		.ow-icon
+		{
+			svg
+			{
+				color: var(--color-pink);
+				fill: var(--color-pink);
+			}
+		}
+	}
+
+	&.ow-mode-balanced
+	{
+		.ow-icon
+		{
+			svg
+			{
+				color: var(--interactive-accent);
+				fill: var(--interactive-accent);
+			}
+		}
+	}
+
+	&.ow-mode-precise
+	{
+		.ow-icon
+		{
+			svg
+			{
+				color: var(--color-cyan);
+				fill: var(--color-cyan);
+			}
 		}
 	}
 
@@ -192,6 +229,44 @@
 				{
 					justify-self: start;
 				}
+			}
+		}
+
+		.ow-message-actions
+		{
+			order: 2;
+		}
+	}
+
+	&.ow-selected-text-bubble
+	{
+		justify-content: start;
+
+		.ow-message-bubble-content
+		{
+			max-height: 250px;
+			order: 1;
+			background-color: var(--interactive-normal);
+			border: 1px solid hsla(var(--interactive-accent-hsl), 0.45);
+
+			.ow-selected-text-info
+			{
+				padding-bottom: 10px;
+				font-weight: bold;
+				font-size: 14px;
+			}
+
+			.ow-message-bubble-top-bar
+			{
+				.ow-branch-selector
+				{
+					justify-self: start;
+				}
+			}
+
+			.ow-content
+			{
+				overflow-x: auto;
 			}
 		}
 

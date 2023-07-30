@@ -1,7 +1,6 @@
 import { IChatMessage, IConversation } from 'interfaces/IThread';
 import Weaver from 'main';
-import { FileSystemAdapter, normalizePath } from 'obsidian';
-import { ThreadManager } from './ThreadManager';
+import { FileSystemAdapter } from 'obsidian';
 import { v4 as uuidv4 } from 'uuid';
 import { FileIOManager } from './FileIOManager';
 
@@ -38,18 +37,26 @@ export class ConversationManager {
 			lastModified: new Date().toISOString(),
 			messages: [
 				{
-					children: [],
-					content: `${plugin.settings.systemRolePrompt}`,
-					context: false,
-					creationDate: new Date().toISOString(),
 					id: currentNodeId,
-					model: plugin.settings.engine,
-					mode: "balanced",
-					role: "system",
 					parent: uuidv4(),
-				}
+					children: [],
+					message_type: 'chat',
+					status: 'sent',
+					context: false,
+					create_time: new Date().toISOString(),
+					update_time: new Date().toISOString(),
+					author: {
+						role: 'system',
+						ai_model: plugin.settings.engine,
+						mode: 'balanced',
+					},
+					content: {
+						content_type: 'text',
+						parts: `${plugin.settings.systemRolePrompt}`,
+					},
+				}				
 			],
-			mode: "balanced",
+			mode: 'balanced',
 			model: plugin.settings.engine
 		};
 
@@ -101,14 +108,14 @@ export class ConversationManager {
 			const fileContent = await adapter.read(filePath);
 			const conversation = JSON.parse(fileContent) as IConversation;
 
-			if (conversation.id === updatedConversation.id && conversation.identifier === 'obsidian-weaver') {
+			if (conversation?.id === updatedConversation.id && conversation?.identifier === 'obsidian-weaver') {
 				// Validate the updated conversation object
-				if (!updatedConversation.id || !updatedConversation.identifier || !updatedConversation.currentNode || !updatedConversation.messages) {
+				if (!updatedConversation?.id || !updatedConversation?.identifier || !updatedConversation.currentNode || !updatedConversation?.messages) {
 					console.error('The updated conversation is missing required fields.');
 					throw new Error('The updated conversation is missing required fields.');
 				}
 
-				updatedConversation.messages = conversation.messages;
+				updatedConversation.messages = conversation?.messages;
 
 				// Write the updated conversation back to the file
 				await adapter.write(filePath, JSON.stringify(updatedConversation, null, 4));
@@ -192,8 +199,6 @@ export class ConversationManager {
 			await adapter.write(filePath, JSON.stringify(conversation, null, 4));
 			return;
 		}
-
-		console.log(`File with path: ${filePath} does not have the required identifier.`);
 	}
 
 	static async addMessageToConversation(plugin: Weaver, id: string, newMessage: IChatMessage): Promise<IChatMessage[]> {
@@ -209,16 +214,16 @@ export class ConversationManager {
 
 			if (conversation.id === id && conversation.identifier === 'obsidian-weaver') {
 				// Ensure the message is valid
-				if (!newMessage.id || !newMessage.content || !newMessage.creationDate || !newMessage.role || !newMessage.parent) {
+				if (!newMessage.id || !newMessage.content || !newMessage.create_time || !newMessage.author.role || !newMessage.parent) {
 					console.error('The new message is missing required fields.');
 					throw new Error('The new message is missing required fields.');
 				}
 
 				// Add the new message to the conversation
-				conversation.messages.push(newMessage);
+				conversation?.messages?.push(newMessage);
 
 				// Update parent message's children array
-				const parentMessage = conversation.messages.find(message => message.id === newMessage.parent);
+				const parentMessage = conversation?.messages?.find(message => message.id === newMessage.parent);
 
 				if (parentMessage) {
 					parentMessage.children.push(newMessage.id);
@@ -255,7 +260,7 @@ export class ConversationManager {
 
 			if (conversation.id === conversationId && conversation.identifier === 'obsidian-weaver') {
 				// Find the target message in the conversation's messages
-				const targetMessage = conversation.messages.find(message => message.id === messageId);
+				const targetMessage = conversation?.messages?.find(message => message.id === messageId);
 
 				if (!targetMessage) {
 					console.error('Target message not found in the conversation.');
@@ -340,7 +345,7 @@ export class ConversationManager {
 	
 			if (conversation.id === id && conversation.identifier === 'obsidian-weaver') {
 				// Find the system prompt in the conversation's messages
-				const systemPrompt = conversation.messages.find(message => message.role === 'system');
+				const systemPrompt = conversation?.messages?.find(message => message.author.role === 'system');
 	
 				if (!systemPrompt) {
 					console.error('System prompt not found in the conversation.');
@@ -348,7 +353,7 @@ export class ConversationManager {
 				}
 	
 				// Update the content of the system prompt
-				systemPrompt.content = newPrompt;
+				systemPrompt.content.parts = newPrompt;
 	
 				// Update lastModified
 				conversation.lastModified = new Date().toISOString();

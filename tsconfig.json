@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
-		"allowJs": true,
+		"target": "esNext",
+		"allowJs": false,
 		"allowSyntheticDefaultImports": true,
 		"baseUrl": "src",
 		"esModuleInterop": true,
@@ -19,14 +20,17 @@
 		],
 		"module": "ESNext",
 		"moduleResolution": "node",
-		"noImplicitAny": true,
+		"noImplicitAny": false,
+		"noEmitOnError": false,
 		"strictNullChecks": true,
-		"target": "ES6"
+		"outDir": "./dist",
 	},
 	"include": [
 		"**/*.ts",
 		"**/*.tsx",
 		"src/**/*.ts",
-		"typings/**/*.ts"
+		"src/**/*",
+		"typings/**/*.ts", 
+		"./esbuild.config.mjs",
 	]
 }
