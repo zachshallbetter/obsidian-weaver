@@ -3,7 +3,13 @@
 
 import * as fs from 'fs';
 
-const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8"));
+let packageJson;
+try {
+    packageJson = JSON.parse(fs.readFileSync("package.json", "utf8"));
+} catch (error) {
+    console.error("Error reading package.json:", error);
+    process.exit(1);
+}
 
 const manifest = {
     'name' : packageJson.name,

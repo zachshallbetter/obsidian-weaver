@@ -87,7 +87,11 @@ function compressDirectoryWithExclusions(sourceDir, outputPath, exclusions) {
 
 function createZip(zipPath, filepaths) {
   const zipArgs = ['-r', zipPath, ...filepaths];
-  child_process.spawnSync('zip', zipArgs, { stdio: 'inherit' });
+  try {
+    child_process.spawnSync('zip', zipArgs, { stdio: 'inherit' });
+} catch (error) {
+    console.error('Error executing zip command:', error);
+}
   console.log(`Zip file created: ${zipPath}`);
 }
 

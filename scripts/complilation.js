@@ -4,7 +4,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-function cleanDistDir(): void {
+function cleanDistDir() {
   const distDir = path.join(__dirname, 'dist');
   try {
     if (!fs.existsSync(distDir)) {
@@ -30,17 +30,17 @@ function createDist() {
 }
 
 // Compile SASS to CSS
-function compileSass(): void {
+function compileSass() {
 
 }
 
 // Compile Typescript
-function compileTypescript(): void {
+function compileTypescript() {
 
 }
 
 // Compress Images
-function compressImages(): void {
+function compressImages() {
 
 }
 
