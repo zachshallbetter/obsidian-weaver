@@ -1,10 +1,6 @@
-import { IChatMessage, IConversation } from "interfaces/IThread";
+import { IConversation } from "interfaces/IThread";
 import Weaver from "main";
-import React, { useEffect, useState, useMemo, useRef, useCallback } from "react";
-import { ConversationManager } from "utils/ConversationManager";
-import { OpenAIMessageDispatcher } from "utils/api/OpenAIMessageDispatcher";
-import { ConversationSelectedText } from "./ConversationSelectedText";
-import { eventEmitter } from "utils/EventEmitter";
+import React, { useEffect } from "react";
 
 interface ConversationSuggestedQuestionsProps {
 	plugin: Weaver;
@@ -13,7 +9,6 @@ interface ConversationSuggestedQuestionsProps {
 }
 
 export const ConversationSuggestedQuestions: React.FC<ConversationSuggestedQuestionsProps> = ({
-	plugin,
 	conversation,
 	onSubmit
 }) => {

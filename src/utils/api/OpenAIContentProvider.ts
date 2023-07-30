@@ -1,8 +1,8 @@
 
 import Weaver from "main";
-import OpenAIRequestFormatter from "../utils/api/OpenAIRequestFormatter";
+import OpenAIRequestFormatter from "./OpenAIRequestFormatter";
 import { IChatMessage, IConversation } from "interfaces/IThread";
-import { OpenAIRequestManager } from "../utils/api/OpenAIRequestManager";
+import { OpenAIRequestManager } from "./OpenAIRequestManager";
 
 export default class OpenAIContentProvider {
 	private readonly plugin: Weaver;

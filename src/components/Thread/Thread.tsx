@@ -4,7 +4,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { ThreadHeader } from "./ThreadHeader";
 import { ThreadConversationList } from "./ThreadConversationList";
 import { IConversation } from "interfaces/IThread";
-import { filterConversations } from '../../helpers/ThreadHelperFunctions';
+import { filterConversations } from 'helpers/ThreadHelperFunctions';
 import { ThreadManager } from "utils/ThreadManager";
 
 interface ThreadProps {

@@ -1,7 +1,6 @@
 import { IConversation } from "interfaces/IThread"
 import Weaver from "main"
 import React, { useEffect, useRef, useState } from "react"
-import { ThreadManager } from "utils/ThreadManager";
 import { ConversationManager } from "utils/ConversationManager";
 
 interface ThreadListItemProps {

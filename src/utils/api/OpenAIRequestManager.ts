@@ -1,5 +1,5 @@
 
-import OpenAIMessageDispatcher from '../utils/api/OpenAIMessageDispatcher';
+import OpenAIMessageDispatcher from './OpenAIMessageDispatcher';
 
 class OpenAIRequestManager {
     private apiEndpoint: string = "https://api.openai.com";
