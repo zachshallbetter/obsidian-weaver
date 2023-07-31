@@ -1,4 +1,4 @@
-import { IConversation } from "typings/IThread";
+import { Conversation } from "typings/weaver";
 import Weaver from "main";
 import React, { useEffect, useState, useRef } from "react";
 import { ConversationManager } from "utils/ConversationManager";
@@ -6,8 +6,8 @@ import { ThreadManager } from "utils/ThreadManager";
 
 interface ConversationHeaderProps {
 	plugin: Weaver;
-	conversation: IConversation;
-	setConversationSession: React.Dispatch<React.SetStateAction<IConversation | undefined>>;
+	conversation: Conversation;
+	setConversationSession: React.Dispatch<React.SetStateAction<Conversation | undefined>>;
 	onTabSwitch: (tabId: string) => void;
 	showConversationSettings: boolean;
 	setShowConversationSettings: React.Dispatch<React.SetStateAction<boolean>>;

@@ -1,4 +1,4 @@
-import { IConversation } from "typings/IThread";
+import { Conversation } from "typings/weaver";
 import Weaver from "main";
 import React, { useEffect, useState } from "react";
 import { ConversationDialogue } from "./ConversationDialogue";
@@ -9,8 +9,8 @@ import { ConversationSettings } from "./ConversationSettings";
 interface ConversationProps {
 	plugin: Weaver;
 	onTabSwitch: (tabId: string) => void;
-	conversation: IConversation | undefined;
-	onConversationLoad: (conversation: IConversation) => void;
+	conversation: Conversation | undefined;
+	onConversationLoad: (conversation: Conversation) => void;
 }
 
 export const Conversation: React.FC<ConversationProps> = ({
@@ -19,7 +19,7 @@ export const Conversation: React.FC<ConversationProps> = ({
 	conversation,
 	onConversationLoad
 }) => {
-	const [conversationSession, setConversationSession] = useState<IConversation | undefined>();
+	const [conversationSession, setConversationSession] = useState<Conversation | undefined>();
 	const [showConversationSettings, setShowConversationSettings] = useState<boolean>(false);
 
 	useEffect(() => {
@@ -30,7 +30,7 @@ export const Conversation: React.FC<ConversationProps> = ({
 		<div className="ow-conversation">
 			<ConversationHeader
 				plugin={plugin}
-				conversation={conversationSession || {} as IConversation}
+				conversation={conversationSession || {} as Conversation}
 				onTabSwitch={onTabSwitch}
 				setConversationSession={setConversationSession}
 				showConversationSettings={showConversationSettings}
@@ -38,12 +38,12 @@ export const Conversation: React.FC<ConversationProps> = ({
 			/>
 			<ConversationDialogue
 				plugin={plugin}
-				conversation={conversationSession || {} as IConversation}
+				conversation={conversationSession || {} as Conversation}
 				setConversationSession={setConversationSession}
 			/>
 			<ConversationInput
 				plugin={plugin}
-				conversation={conversationSession || {} as IConversation}
+				conversation={conversationSession || {} as Conversation}
 				setConversationSession={setConversationSession}
 				onConversationLoad={onConversationLoad}
 				onTabSwitch={onTabSwitch}
@@ -51,7 +51,7 @@ export const Conversation: React.FC<ConversationProps> = ({
 			{showConversationSettings === true ? (
 				<ConversationSettings 
 					plugin={plugin} 
-					conversation={conversation as IConversation}
+					conversation={conversation as Conversation}
 				/>
 			) : null}
 		</div>

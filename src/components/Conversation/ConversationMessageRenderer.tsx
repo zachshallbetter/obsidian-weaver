@@ -1,15 +1,15 @@
 import React from 'react';
-import { IChatMessage, IConversation } from 'typings/IThread';
+import { ChatMessage, Conversation } from 'typings/weaver';
 import { ConversationMessageBubble } from "./ConversationMessageBubble";
 import { ConversationRenderer } from "helpers/ConversationRenderer";
 import Weaver from 'main';
 
 interface MessageRendererProps {
 	messageId: string;
-	previousMessage?: IChatMessage;
+	previousMessage?: ChatMessage;
 	selectedChildren: { [key: string]: number };
 	changeSelectedChild: (messageId: string | undefined, increment: number) => Promise<void>;
-	conversation?: IConversation;
+	conversation?: Conversation;
 	plugin: Weaver;
 }
 
@@ -21,7 +21,7 @@ const MessageRenderer: React.FC<MessageRendererProps> = ({
 	conversation,
 	plugin
 }) => {
-	const message: IChatMessage | undefined = conversation?.messages?.find((msg) => msg.id === messageId);
+	const message: ChatMessage | undefined = conversation?.messages?.find((msg) => msg.id === messageId);
 	const conversationRenderer = new ConversationRenderer(conversation);
 
 	if (!message) {

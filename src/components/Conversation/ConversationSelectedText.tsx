@@ -1,16 +1,16 @@
 import React, { Dispatch, SetStateAction, useRef } from 'react';
 import Weaver from "main";
 import OpenAIMessageDispatcher from 'utils/api/OpenAIMessageDispatcher';
-import { IChatMessage, IConversation } from 'typings/IThread';
+import { ChatMessage, Conversation } from 'typings/weaver';
 
 interface ConversationSelectedTextProps {
 	plugin: Weaver,
 	selectedText: string;
 	setSelectedText: Dispatch<SetStateAction<string>>;  
-	conversation: IConversation | undefined;
-	setConversationSession: React.Dispatch<React.SetStateAction<IConversation | undefined>>;
-	updateConversation: (newMessage: IChatMessage, callback: (updatedMessages: IChatMessage[]) => void) => void;
-	getRenderedMessages: (conversation: IConversation | null | undefined) => IChatMessage[];
+	conversation: Conversation | undefined;
+	setConversationSession: React.Dispatch<React.SetStateAction<Conversation | undefined>>;
+	updateConversation: (newMessage: ChatMessage, callback: (updatedMessages: ChatMessage[]) => void) => void;
+	getRenderedMessages: (conversation: Conversation | null | undefined) => ChatMessage[];
 }
 
 export const ConversationSelectedText: React.FC<ConversationSelectedTextProps> = ({
@@ -27,7 +27,7 @@ export const ConversationSelectedText: React.FC<ConversationSelectedTextProps> =
 	const handleSubmit = () => {
 		messageDispatcherRef.current = new OpenAIMessageDispatcher(
 			plugin,
-			conversation as IConversation,
+			conversation as Conversation,
 			setConversationSession,
 			updateConversation
 		);

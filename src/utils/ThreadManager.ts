@@ -1,9 +1,9 @@
-import { IConversation } from 'typings/IThread';
+import { Conversation } from 'typings/weaver';
 import Weaver from 'main';
 import { FileSystemAdapter } from 'obsidian';
 
 export class ThreadManager {
-	static async getAllConversations(plugin: Weaver, folderPath: string): Promise<IConversation[]> {
+	static async getAllConversations(plugin: Weaver, folderPath: string): Promise<Conversation[]> {
 		const adapter = plugin.app.vault.adapter as FileSystemAdapter;
 
 		if (!(await adapter.exists(folderPath))) {
@@ -16,7 +16,7 @@ export class ThreadManager {
 
 		const fileContentsPromises = filesInFolder.map(async (filePath) => {
 			const fileContent = await adapter.read(filePath);
-			return JSON.parse(fileContent) as IConversation;
+			return JSON.parse(fileContent) as Conversation;
 		});
 
 		const conversations = await Promise.all(fileContentsPromises);

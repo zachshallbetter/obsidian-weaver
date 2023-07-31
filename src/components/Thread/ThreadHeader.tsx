@@ -1,4 +1,4 @@
-import { IConversation } from "typings/IThread";
+import { Conversation } from "typings/weaver";
 import Weaver from "main"
 import LocalJsonModal from "components/Modals/ImportModal";
 import React, { useState } from "react"
@@ -10,7 +10,7 @@ interface ThreadHeaderProps {
 	searchTerm: string;
 	onSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	onTabSwitch: (tabId: string) => void;
-	onConversationLoad: (conversation: IConversation) => void;
+	onConversationLoad: (conversation: Conversation) => void;
 }
 
 export const ThreadHeader: React.FC<ThreadHeaderProps> = ({

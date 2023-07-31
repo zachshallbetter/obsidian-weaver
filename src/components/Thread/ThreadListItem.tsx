@@ -1,14 +1,14 @@
-import { IConversation } from "typings/IThread"
+import { Conversation } from "typings/weaver"
 import Weaver from "main"
 import React, { useEffect, useRef, useState } from "react"
 import { ConversationManager } from "utils/ConversationManager";
 
 interface ThreadListItemProps {
 	plugin: Weaver;
-	conversation: IConversation;
+	conversation: Conversation;
 	onConversationDeleted: (id: string) => void;
 	onTabSwitch: (tabId: string) => void;
-	onConversationLoad: (conversation: IConversation) => void;
+	onConversationLoad: (conversation: Conversation) => void;
 }
 
 export const ThreadListItem: React.FC<ThreadListItemProps> = ({

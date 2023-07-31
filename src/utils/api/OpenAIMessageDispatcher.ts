@@ -1,5 +1,5 @@
 
-import { IChatMessage } from 'typings/IThread';
+import { ChatMessage } from 'typings/weaver';
 
 class OpenAIMessageDispatcher {
     private apiEndpoint: string = "https://api.openai.com";
@@ -9,8 +9,8 @@ class OpenAIMessageDispatcher {
         maxTokens: 150
     };
     private responseTimeout: number = 5000; // in milliseconds
-    private userMessage: IChatMessage | null = null;
-    private assistantMessage: IChatMessage | null = null;
+    private userMessage: ChatMessage | null = null;
+    private assistantMessage: ChatMessage | null = null;
 
     private handleSSEError(error: Event) {
         console.error("SSE Error:", error);
@@ -23,7 +23,7 @@ class OpenAIMessageDispatcher {
     }
 
     public addInfoMessageToConversation(messageContent: string) {
-        const infoMessage: IChatMessage = {
+        const infoMessage: ChatMessage = {
             content: messageContent,
             sender: "info",
             timestamp: new Date().toISOString()
@@ -36,7 +36,7 @@ class OpenAIMessageDispatcher {
     }
 
     private displayLoadingIndicator() {
-        const loadingMessage: IChatMessage = {
+        const loadingMessage: ChatMessage = {
             content: "Assistant is thinking...",
             sender: "info",
             timestamp: new Date().toISOString()
@@ -52,7 +52,7 @@ class OpenAIMessageDispatcher {
         if (response.error) {
             this.handleOpenAIError(response.error);
         } else {
-            const assistantMessage: IChatMessage = {
+            const assistantMessage: ChatMessage = {
                 content: response.choices[0].text.trim(),
                 sender: "assistant",
                 timestamp: new Date().toISOString()
@@ -61,7 +61,7 @@ class OpenAIMessageDispatcher {
         }
     }
 
-    public addMessageToConversation(message: IChatMessage) {
+    public addMessageToConversation(message: ChatMessage) {
         // Logic to add the message to the conversation
     }
 }

@@ -1,23 +1,23 @@
-import { IChatMessage, IConversation } from 'typings/IThread';
+import { ChatMessage, Conversation } from 'typings/weaver';
 import Weaver from 'main';
 import { FileSystemAdapter } from 'obsidian';
 import { v4 as uuidv4 } from 'uuid';
 import { FileIOManager } from 'utils/FileIOManager';
 
 export class ConversationManager {
-	static async createNewConversation(plugin: Weaver): Promise<IConversation> {
+	static async createNewConversation(plugin: Weaver): Promise<Conversation> {
 		const folderPath = `${plugin.settings.weaverFolderPath}/threads/base`;
 		const adapter = plugin.app.vault.adapter as FileSystemAdapter;
 
 		const folderContent = await adapter.list(folderPath);
 		const filesInFolder = folderContent.files.filter(filePath => filePath.endsWith('.json'));
 
-		const conversations: IConversation[] = [];
+		const conversations: Conversation[] = [];
 
 		// Iterate through files to build conversations list
 		for (const filePath of filesInFolder) {
 			const fileContent = await adapter.read(filePath);
-			const conversation = JSON.parse(fileContent) as IConversation;
+			const conversation = JSON.parse(fileContent) as Conversation;
 			conversations.push(conversation);
 		}
 
@@ -27,7 +27,7 @@ export class ConversationManager {
 		const currentNodeId = uuidv4();
 
 		// Create a new conversation object
-		const newConversation: IConversation = {
+		const newConversation: Conversation = {
 			id: uuidv4(), // Generate a unique id
 			title: uniqueTitle,
 			identifier: 'obsidian-weaver',
@@ -84,7 +84,7 @@ export class ConversationManager {
 
 		for (const filePath of filesInFolder) {
 			const fileContent = await adapter.read(filePath);
-			const conversation = JSON.parse(fileContent) as IConversation;
+			const conversation = JSON.parse(fileContent) as Conversation;
 
 			if (conversation.id === id && conversation.identifier === 'obsidian-weaver') {
 				plugin.isRenamingFromInside = true;
@@ -97,7 +97,7 @@ export class ConversationManager {
 		console.error(`Conversation with ID: ${id} not found`);
 	}
 
-	static async updateConversation(plugin: Weaver, updatedConversation: IConversation): Promise<boolean> {
+	static async updateConversation(plugin: Weaver, updatedConversation: Conversation): Promise<boolean> {
 		const folderPath = `${plugin.settings.weaverFolderPath}/threads/base`;
 		const adapter = plugin.app.vault.adapter as FileSystemAdapter;
 
@@ -106,7 +106,7 @@ export class ConversationManager {
 
 		for (const filePath of filesInFolder) {
 			const fileContent = await adapter.read(filePath);
-			const conversation = JSON.parse(fileContent) as IConversation;
+			const conversation = JSON.parse(fileContent) as Conversation;
 
 			if (conversation?.id === updatedConversation.id && conversation?.identifier === 'obsidian-weaver') {
 				// Validate the updated conversation object
@@ -128,7 +128,7 @@ export class ConversationManager {
 		return false;
 	}
 
-	static getUniqueTitle(initialTitle: string, conversations: IConversation[]): string {
+	static getUniqueTitle(initialTitle: string, conversations: Conversation[]): string {
 		let uniqueTitle = initialTitle;
 		let index = 1;
 
@@ -149,12 +149,12 @@ export class ConversationManager {
 			const folderContent = await adapter.list(folderPath);
 			const filesInFolder = folderContent.files.filter(filePath => filePath.endsWith('.json'));
 
-			const conversations: IConversation[] = [];
+			const conversations: Conversation[] = [];
 
 			// Iterate through files to build conversations list
 			for (const filePath of filesInFolder) {
 				const fileContent = await adapter.read(filePath);
-				const conversation = JSON.parse(fileContent) as IConversation;
+				const conversation = JSON.parse(fileContent) as Conversation;
 				conversations.push(conversation);
 			}
 
@@ -164,7 +164,7 @@ export class ConversationManager {
 			// Iterate through files again to update the conversation with the correct id
 			for (const filePath of filesInFolder) {
 				const fileContent = await adapter.read(filePath);
-				const conversation = JSON.parse(fileContent) as IConversation;
+				const conversation = JSON.parse(fileContent) as Conversation;
 
 				if (conversation.id === id && conversation.identifier === 'obsidian-weaver') {
 					plugin.isRenamingFromInside = true;
@@ -192,7 +192,7 @@ export class ConversationManager {
 		}
 
 		const fileContent = await adapter.read(filePath);
-		const conversation = JSON.parse(fileContent) as IConversation;
+		const conversation = JSON.parse(fileContent) as Conversation;
 
 		if (conversation.identifier === 'obsidian-weaver') {
 			conversation.title = newTitle;
@@ -201,7 +201,7 @@ export class ConversationManager {
 		}
 	}
 
-	static async addMessageToConversation(plugin: Weaver, id: string, newMessage: IChatMessage): Promise<IChatMessage[]> {
+	static async addMessageToConversation(plugin: Weaver, id: string, newMessage: ChatMessage): Promise<ChatMessage[]> {
 		const folderPath = `${plugin.settings.weaverFolderPath}/threads/base`;
 		const adapter = plugin.app.vault.adapter as FileSystemAdapter;
 
@@ -210,7 +210,7 @@ export class ConversationManager {
 
 		for (const filePath of filesInFolder) {
 			const fileContent = await adapter.read(filePath);
-			const conversation = JSON.parse(fileContent) as IConversation;
+			const conversation = JSON.parse(fileContent) as Conversation;
 
 			if (conversation.id === id && conversation.identifier === 'obsidian-weaver') {
 				// Ensure the message is valid
@@ -256,7 +256,7 @@ export class ConversationManager {
 
 		for (const filePath of filesInFolder) {
 			const fileContent = await adapter.read(filePath);
-			const conversation = JSON.parse(fileContent) as IConversation;
+			const conversation = JSON.parse(fileContent) as Conversation;
 
 			if (conversation.id === conversationId && conversation.identifier === 'obsidian-weaver') {
 				// Find the target message in the conversation's messages
@@ -293,7 +293,7 @@ export class ConversationManager {
 
 		for (const filePath of filesInFolder) {
 			const fileContent = await adapter.read(filePath);
-			const conversation = JSON.parse(fileContent) as IConversation;
+			const conversation = JSON.parse(fileContent) as Conversation;
 
 			if (conversation.id === id && conversation.identifier === 'obsidian-weaver') {
 				conversation.model = newModel;
@@ -317,7 +317,7 @@ export class ConversationManager {
 
 		for (const filePath of filesInFolder) {
 			const fileContent = await adapter.read(filePath);
-			const conversation = JSON.parse(fileContent) as IConversation;
+			const conversation = JSON.parse(fileContent) as Conversation;
 
 			if (conversation.id === id && conversation.identifier === 'obsidian-weaver') {
 				conversation.mode = newMode;
@@ -341,7 +341,7 @@ export class ConversationManager {
 	
 		for (const filePath of filesInFolder) {
 			const fileContent = await adapter.read(filePath);
-			const conversation = JSON.parse(fileContent) as IConversation;
+			const conversation = JSON.parse(fileContent) as Conversation;
 	
 			if (conversation.id === id && conversation.identifier === 'obsidian-weaver') {
 				// Find the system prompt in the conversation's messages

@@ -1,10 +1,10 @@
-import { IConversation } from "typings/IThread";
+import { Conversation } from "typings/weaver";
 import Weaver from "main";
 import React from "react";
 
 interface ConversationSettingsProps {
 	plugin: Weaver;
-	conversation: IConversation
+	conversation: Conversation
 }
 
 export const ConversationSettings: React.FC<ConversationSettingsProps> = ({

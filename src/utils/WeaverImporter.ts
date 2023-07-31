@@ -1,6 +1,6 @@
 import Weaver from 'main';
 import { FileSystemAdapter, normalizePath } from 'obsidian';
-import { IConversation, IChatMessage } from '../typings/IThread';
+import { Conversation, ChatMessage } from '../typings/weaver';
 import { FileIOManager } from 'utils/FileIOManager';
 import { ThreadManager } from 'utils/ThreadManager';
 import { eventEmitter } from 'utils/EventEmitter';
@@ -46,7 +46,7 @@ export class WeaverImporter {
 					continue;
 				}
 	
-				const messages: IChatMessage[] = [];
+				const messages: ChatMessage[] = [];
 	
 				for (const nodeId in conversation.mapping) {
 					const node = conversation.mapping[nodeId];
@@ -79,7 +79,7 @@ export class WeaverImporter {
 					}
 				}
 				
-				const conversationData: IConversation = {
+				const conversationData: Conversation = {
 					context: true,
 					creationDate: new Date(conversation.create_time * 1000).toISOString(),
 					currentNode: conversation.current_node,

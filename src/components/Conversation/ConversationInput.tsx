@@ -1,4 +1,4 @@
-import { IChatMessage, IConversation } from "typings/IThread";
+import { ChatMessage, Conversation } from "typings/weaver";
 import Weaver from "main";
 import React, { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { ConversationManager } from "utils/ConversationManager";
@@ -9,9 +9,9 @@ import { ConversationSuggestedQuestions } from "./ConversationSuggestedQuestions
 
 interface ConversationInput {
 	plugin: Weaver;
-	conversation: IConversation | undefined;
-	setConversationSession: React.Dispatch<React.SetStateAction<IConversation | undefined>>;
-	onConversationLoad: (conversation: IConversation) => void;
+	conversation: Conversation | undefined;
+	setConversationSession: React.Dispatch<React.SetStateAction<Conversation | undefined>>;
+	onConversationLoad: (conversation: Conversation) => void;
 	onTabSwitch: (tabId: string) => void;
 }
 
@@ -36,7 +36,7 @@ export const ConversationInput: React.FC<ConversationInput> = ({
 	// Create a ref for your dispatcher
 	const messageDispatcherRef = useRef<OpenAIMessageDispatcher | null>(null);
 
-	const updateConversation = async (newMessage: IChatMessage, callback: (updatedMessages: IChatMessage[]) => void) => {
+	const updateConversation = async (newMessage: ChatMessage, callback: (updatedMessages: ChatMessage[]) => void) => {
 		if (conversation) {
 			const updatedMessages = await ConversationManager.addMessageToConversation(plugin, conversation.id, newMessage);
 			callback(updatedMessages);
@@ -72,7 +72,7 @@ export const ConversationInput: React.FC<ConversationInput> = ({
 		}
 	}
 
-	const getRenderedMessages = (conversation: IConversation | null | undefined): IChatMessage[] => {
+	const getRenderedMessages = (conversation: Conversation | null | undefined): ChatMessage[] => {
 		if (!conversation) {
 			return [];
 		}
@@ -103,8 +103,8 @@ export const ConversationInput: React.FC<ConversationInput> = ({
 		findPathToCurrentNode(conversation?.messages?.find(msg => msg.author.role === "system")?.id || '', []);
 
 		// Function to get messages to be rendered.
-		const deriveRenderedMessages = (messageId: string): IChatMessage[] => {
-			const message: IChatMessage | undefined | null = conversation?.messages?.find((msg) => msg.id === messageId);
+		const deriveRenderedMessages = (messageId: string): ChatMessage[] => {
+			const message: ChatMessage | undefined | null = conversation?.messages?.find((msg) => msg.id === messageId);
 
 			if (!message) {
 				return [];
@@ -136,7 +136,7 @@ export const ConversationInput: React.FC<ConversationInput> = ({
 		// Create a new OpenAIMessageDispatcher when the form is submitted
 		messageDispatcherRef.current = new OpenAIMessageDispatcher(
 			plugin,
-			conversation as IConversation,
+			conversation as Conversation,
 			setConversationSession,
 			updateConversation
 		);
@@ -161,7 +161,7 @@ export const ConversationInput: React.FC<ConversationInput> = ({
 	const handleRegenerateMessage = async () => {
 		messageDispatcherRef.current = new OpenAIMessageDispatcher(
 			plugin,
-			conversation as IConversation,
+			conversation as Conversation,
 			setConversationSession,
 			updateConversation
 		);

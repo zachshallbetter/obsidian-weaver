@@ -1,10 +1,10 @@
-import { IChatMessage, IConversation } from "typings/IThread";
+import { ChatMessage, Conversation } from "typings/weaver";
 
 export class ConversationRenderer {
 	private selectedChildren: { [key: string]: number } = {};
-	private conversation?: IConversation;
+	private conversation?: Conversation;
 
-	constructor(conversation?: IConversation) {
+	constructor(conversation?: Conversation) {
 		this.conversation = conversation;
 
 		if (!this.conversation) {
@@ -32,7 +32,7 @@ export class ConversationRenderer {
 		return [];
 	}
 
-	private deriveRenderedMessages(messageId: string): IChatMessage[] {
+	private deriveRenderedMessages(messageId: string): ChatMessage[] {
 		const message = this.conversation!.messages.find((msg) => msg.id === messageId);
 
 		if (!message) {
@@ -46,7 +46,7 @@ export class ConversationRenderer {
 		return message.author.role === "system" ? nextMessage : [message, ...nextMessage];
 	}
 
-	public getRenderedMessages(): IChatMessage[] {
+	public getRenderedMessages(): ChatMessage[] {
 		const rootMessage = this.conversation!.messages.find((msg) => msg.author.role === "system");
 
 		if (!rootMessage) {

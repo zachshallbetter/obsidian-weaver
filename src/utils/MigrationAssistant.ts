@@ -4,7 +4,7 @@ import Weaver from 'main';
 import { FileSystemAdapter, normalizePath } from 'obsidian';
 
 // Third-party modules
-import { IChatMessage, IConversation } from 'typings/IThread';
+import { ChatMessage, Conversation } from 'typings/weaver';
 import { v4 as uuidv4 } from 'uuid';
 import { ThreadManager } from 'utils/ThreadManager';
 import { FileIOManager } from 'utils/FileIOManager';
@@ -62,14 +62,14 @@ export class MigrationAssistant {
 	
 				const conversationsPromises = oldData.threads[0].conversations?.map(async (conversation: { messages: unknown[]; title: string; timestamp: any; }) => {
 					let previousMessageId: string = uuidv4();
-					let previousMessage: IChatMessage | null = null;
+					let previousMessage: ChatMessage | null = null;
 					let nextMessageId = "";
 	
-					const newMessages: IChatMessage[] = conversation?.messages?.map((message: any, index: number) => {
+					const newMessages: ChatMessage[] = conversation?.messages?.map((message: any, index: number) => {
 						const messageId = uuidv4();
 						const creationTime = new Date(message.timestamp).toISOString();
 	
-						const newMessage: IChatMessage = {
+						const newMessage: ChatMessage = {
 							id: messageId,
 							parent: previousMessageId,
 							children: [],
@@ -115,7 +115,7 @@ export class MigrationAssistant {
 					// Update the count in cache
 					titleCache[baseTitle] = count + 1;
 	
-					const newConversation: IConversation = {
+					const newConversation: Conversation = {
 						currentNode: nextMessageId,
 						context: true,
 						creationDate: conversation.timestamp,

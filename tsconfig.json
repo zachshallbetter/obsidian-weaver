@@ -33,7 +33,7 @@
 			"node",
 			"react",
 			"react-dom",
-		],
+		]
 	},
 	"include": [
 		"**/*.ts",

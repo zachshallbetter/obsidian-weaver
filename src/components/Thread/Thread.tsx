@@ -3,14 +3,14 @@ import React, { useEffect, useState, useMemo } from "react";
 
 import { ThreadHeader } from "./ThreadHeader";
 import { ThreadConversationList } from "./ThreadConversationList";
-import { IConversation } from "typings/IThread";
+import { Conversation } from "typings/weaver";
 import { filterConversations } from 'helpers/ThreadHelperFunctions';
 import { ThreadManager } from "utils/ThreadManager";
 
 interface ThreadProps {
 	plugin: Weaver;
 	onTabSwitch: (tabId: string) => void;
-	onConversationLoad: (conversation: IConversation) => void;
+	onConversationLoad: (conversation: Conversation) => void;
 }
 
 export const Thread: React.FC<ThreadProps> = ({ 
@@ -18,7 +18,7 @@ export const Thread: React.FC<ThreadProps> = ({
 	onTabSwitch,
 	onConversationLoad
 }) => {
-	const [conversations, setConversations] = useState<IConversation[]>([]);
+	const [conversations, setConversations] = useState<Conversation[]>([]);
 	const [searchTerm, setSearchTerm] = useState("");
 
 	useEffect(() => {

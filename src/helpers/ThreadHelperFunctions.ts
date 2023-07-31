@@ -1,4 +1,4 @@
-import { IConversation } from "typings/IThread";
+import { Conversation } from "typings/weaver";
 import Weaver from "main";
 
 const sectionHeaderHeight = 25;
@@ -20,7 +20,7 @@ export const groupBy = (list, keyGetter) => {
 }
 
 export const filterConversations = (
-	conversations: IConversation[],
+	conversations: Conversation[],
 	searchTerm: string,
 	searchField: "title" | "messages" = "title"
 ) => {

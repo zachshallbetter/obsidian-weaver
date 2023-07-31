@@ -5,7 +5,7 @@ import { Thread } from "./Thread"
 
 import { eventEmitter } from 'utils/EventEmitter';
 import { Conversation } from "components/Conversation/Conversation";
-import { IConversation } from "typings/IThread";
+import { Conversation } from "typings/weaver";
 import { ThreadManager } from "utils/ThreadManager";
 
 interface ThreadTabsManagerProps {
@@ -15,7 +15,7 @@ interface ThreadTabsManagerProps {
 export const ThreadTabsManager: React.FC<ThreadTabsManagerProps> = ({ plugin }) => {
 	const [activeTab, setActiveTab] = useState("thread-page");
 	const [reloadTrigger, setReloadTrigger] = React.useState<number>(0);
-	const [conversation, setConversation] = useState<IConversation | undefined>();
+	const [conversation, setConversation] = useState<Conversation | undefined>();
 
 	useEffect(() => {
 		const handleReload = async () => {
@@ -34,7 +34,7 @@ export const ThreadTabsManager: React.FC<ThreadTabsManagerProps> = ({ plugin }) 
 		setActiveTab(tabId);
 	}
 
-	const handleConversationLoad = async (conversation: IConversation) => {
+	const handleConversationLoad = async (conversation: Conversation) => {
 		setConversation(conversation);
 		plugin.settings.lastConversationId = conversation.id;
 		plugin.settings.loadLastConversationState = true;
@@ -49,7 +49,7 @@ export const ThreadTabsManager: React.FC<ThreadTabsManagerProps> = ({ plugin }) 
 					const conversationData = await ThreadManager.getAllConversations(plugin, `${plugin.settings.weaverFolderPath}/threads/base`);
 					const conversationToLoad = conversationData.find(conversation => conversation.id === plugin.settings.lastConversationId);
 					handleTabSwitch("conversation-page");
-					handleConversationLoad(conversationToLoad as IConversation);
+					handleConversationLoad(conversationToLoad as Conversation);
 				}, 500);
 
 				// Clean up the timeout if the component unmounts before it expires

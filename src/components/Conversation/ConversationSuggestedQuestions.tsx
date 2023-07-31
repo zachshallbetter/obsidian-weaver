@@ -1,10 +1,10 @@
-import { IConversation } from "typings/IThread";
+import { Conversation } from "typings/weaver";
 import Weaver from "main";
 import React, { useEffect } from "react";
 
 interface ConversationSuggestedQuestionsProps {
 	plugin: Weaver;
-	conversation: IConversation | undefined;
+	conversation: Conversation | undefined;
 	onSubmit: (event: React.FormEvent, overrideText?: string) => Promise<void>;
 }
 

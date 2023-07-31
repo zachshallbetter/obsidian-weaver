@@ -1,7 +1,7 @@
 import { FileSystemAdapter, normalizePath } from 'obsidian';
 import Weaver from 'main';
 
-import { IConversation } from 'typings/IThread';
+import { Conversation } from 'typings/weaver';
 import { ThreadManager } from 'utils/ThreadManager';
 import { ConversationManager } from 'utils/ConversationManager';
 
@@ -19,7 +19,7 @@ export class WeaverHealthManager {
 
 				const matchingFile = folderContent.files.find(async file => {
 					const fileContent = await adapter.read(file);
-					const fileConversation = JSON.parse(fileContent) as IConversation;
+					const fileConversation = JSON.parse(fileContent) as Conversation;
 
 					return fileConversation.id === conversation.id && fileConversation.identifier === 'obsidian-weaver';
 				});

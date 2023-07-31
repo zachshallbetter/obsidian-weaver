@@ -1,12 +1,12 @@
-import { IChatMessage } from 'typings/IThread';
+import { ChatMessage } from 'typings/weaver';
 import Weaver from 'main';
 import { Component, MarkdownRenderer } from 'obsidian';
 import React, { useEffect, useState } from 'react';
 
 interface ConversationMessageBubbleProps {
 	plugin: Weaver;
-	message: IChatMessage;
-	previousMessage: IChatMessage | undefined;
+	message: ChatMessage;
+	previousMessage: ChatMessage | undefined;
 	selectedChild: number;
 	onSelectedChildChange: (increment: number) => void;
 	contextDisplay?: boolean;

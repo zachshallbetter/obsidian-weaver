@@ -1,7 +1,7 @@
 // ThreadListItemRenderer.tsx
 import React from 'react';
 import { ThreadListItem } from "./ThreadListItem";
-import { IConversation } from "typings/IThread";
+import { Conversation } from "typings/weaver";
 import Weaver from "main";
 
 interface ItemRendererProps {
@@ -11,7 +11,7 @@ interface ItemRendererProps {
 	plugin: Weaver;
 	onConversationDeleted: (id: string) => void;
 	onTabSwitch: (tabId: string) => void;
-	onConversationLoad: (conversation: IConversation) => void;
+	onConversationLoad: (conversation: Conversation) => void;
 }
 
 export const ThreadListItemRenderer: React.FC<ItemRendererProps> = ({ 

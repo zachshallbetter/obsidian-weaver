@@ -1,7 +1,7 @@
 
 import Weaver from "main";
 import { WeaverSettings } from "settings";
-import { IChatMessage, IConversation } from "typings/IThread";
+import { ChatMessage, Conversation } from "typings/weaver";
 
 interface BodyParameters {
 	messages: { role: string; content: string; }[];
@@ -33,7 +33,7 @@ export default class OpenAIRequestFormatter {
 					[key: string]: string
 				}
 			}
-		} = {}, conversation: IConversation, conversationHistory: IChatMessage[] = []
+		} = {}, conversation: Conversation, conversationHistory: ChatMessage[] = []
 	) {
 		const requestUrl = `${this.requestUrlBase}${this.requestEndpoint}`;
 		const bodyParameters: BodyParameters = {
@@ -42,7 +42,7 @@ export default class OpenAIRequestFormatter {
 			model: conversation.model ? conversation.model : parameters.engine,
 			temperature: parameters.temperature,
 			stream: true,
-			messages: conversationHistory.map((message: IChatMessage) => {
+			messages: conversationHistory.map((message: ChatMessage) => {
 				return { role: message.author.role, content: message.content.parts };
 			})
 		};

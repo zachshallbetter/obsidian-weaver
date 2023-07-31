@@ -1,17 +1,17 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { List, CellMeasurer, CellMeasurerCache, AutoSizer } from "react-virtualized";
-import { IConversation } from "typings/IThread";
+import { Conversation } from "typings/weaver";
 import Weaver from "main";
 import { ThreadListItemRenderer } from './ThreadListItemRenderer';
 import { filterConversations, groupBy, getSection, getItemSize } from 'helpers/ThreadHelperFunctions';
 
 interface ThreadConversationListProps {
 	plugin: Weaver;
-	conversations: IConversation[];
+	conversations: Conversation[];
 	onConversationDeleted: (id: string) => void;
 	searchTerm: string;
 	onTabSwitch: (tabId: string) => void;
-	onConversationLoad: (conversation: IConversation) => void;
+	onConversationLoad: (conversation: Conversation) => void;
 }
 
 export const ThreadConversationList: React.FC<ThreadConversationListProps> = ({

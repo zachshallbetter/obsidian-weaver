@@ -1,7 +1,7 @@
 
 import Weaver from "main";
 import OpenAIRequestFormatter from "./OpenAIRequestFormatter";
-import { IChatMessage, IConversation } from "typings/IThread";
+import { ChatMessage, Conversation } from "typings/IThread";
 import OpenAIRequestManager from "./OpenAIRequestManager";
 
 export default class OpenAIContentProvider {
@@ -18,10 +18,10 @@ export default class OpenAIContentProvider {
 	public async generateResponse(
 		parameters: any = this.plugin.settings,
 		additionalParameters: any = {},
-		conversation: IConversation,
-		conversationContext: IChatMessage[],
-		userMessage: IChatMessage,
-		addMessage: (message: IChatMessage) => void,
+		conversation: Conversation,
+		conversationContext: ChatMessage[],
+		userMessage: ChatMessage,
+		addMessage: (message: ChatMessage) => void,
 		updateCurrentAssistantMessageContent: (content: string) => void,
 	): Promise<boolean> {
 		const requestParameters = this.requestFormatter.prepareChatRequestParameters(parameters, additionalParameters, conversation, conversationContext);

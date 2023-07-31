@@ -1,111 +1,81 @@
 // Run: node scripts/compressor.js release, package, all
 // Description: Compresses the build files into zip files for release.
 
-const fs = require('fs');
-const path = require('path');
-const glob = require('glob');
-const archiver = require('archiver');
-const { version, name: projectName } = require('../package.json');
-const { minimatch } = require('minimatch')
+import fs from 'fs';
+import path from 'path';
+import glob from 'glob';
+import archiver from 'archiver';
+import { minimatch } from 'minimatch';
+import { fileURLToPath } from 'url';
+
+// Derive __dirname from import.meta.url
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const rootDir = path.resolve(__dirname, '..');
 const distDir = path.resolve(rootDir, 'dist');
+const packageJson = JSON.parse(fs.readFileSync(path.join(rootDir, "package.json"), "utf-8"));
+const projectName = packageJson.name;
+const version = packageJson.version;
 
-function getGitIgnorePatterns(sourceDir) {
+function getGitIgnorePatterns() {
   const gitIgnorePath = path.join(rootDir, '.gitignore');
 
   if (!fs.existsSync(gitIgnorePath)) {
     return [];
   }
 
-  const ignorePatterns = fs.readFileSync(gitIgnorePath, 'utf-8')
+  return fs.readFileSync(gitIgnorePath, 'utf-8')
     .split('\n')
     .filter((line) => line.trim() !== '' && !line.startsWith('#'));
-
-  return ignorePatterns;
 }
 
-function getFilesToCompress(sourceDir) {
-  const ignorePatterns = getGitIgnorePatterns(sourceDir);
-
+function getFilesToCompress() {
+  const ignorePatterns = getGitIgnorePatterns();
   const allFiles = glob.sync('**/*', {
-    cwd: sourceDir,
+    cwd: rootDir,
+    nodir: true,
+    dot: true,  // Include dot files
+    ignore: ['dist/**/*', 'node_modules/**/*', '.git/**/*']
   });
-
-  const filesToCompress = allFiles.filter(file => !ignorePatterns.some(pattern => minimatch(file, pattern)));
-
-  return filesToCompress;
+  return allFiles.filter(file => !ignorePatterns.some(pattern => minimatch(file, pattern)));
 }
 
-function compressFiles(sourceDir, targetDir, prefix) {
-  const outputPath = path.resolve(targetDir, `${prefix}-${projectName}-${version}.zip`);
-  const filesToCompress = getFilesToCompress(sourceDir);
-  compressDirectoryWithExclusions(sourceDir, outputPath, filesToCompress);
-  return outputPath;
-}
+function compressFiles(prefix) {
+  const outputPath = path.resolve(distDir, `${prefix}-${projectName}-${version}.zip`);
+  const filesToCompress = getFilesToCompress();
 
-function compressDirectoryWithExclusions(sourceDir, outputPath, exclusions) {
-  // Create a writable stream for the output zip file
   const output = fs.createWriteStream(outputPath);
   const archive = archiver('zip', {
     zlib: { level: 9 } // Sets the compression level
   });
 
-  // Listen for archive completion
-  output.on('close', function () {
-    console.log(archive.pointer() + ' total bytes');
-    console.log('Archiver has been finalized and the output file descriptor has closed.');
-  });
-
-  // Good practice to catch warnings (e.g. stat failures and other non-blocking errors)
   archive.on('warning', function (err) {
     if (err.code === 'ENOENT') {
       console.warn(err);
     } else {
-      // Throw error for any other warnings
       throw err;
     }
   });
 
-  // Good practice to catch this error explicitly
   archive.on('error', function (err) {
     throw err;
   });
 
-  // Pipe archive data to the file
   archive.pipe(output);
-
-  // Append the directory to the archive and apply exclusions
-  archive.glob('**/*', {
-    cwd: sourceDir,
-    ignore: exclusions
-  });
-
-  // Finalize the archive
+  filesToCompress.forEach(file => archive.file(path.join(rootDir, file), { name: file }));
   archive.finalize();
-}
 
-function createZip(zipPath, filepaths) {
-  const zipArgs = ['-r', zipPath, ...filepaths];
-  try {
-    child_process.spawnSync('zip', zipArgs, { stdio: 'inherit' });
-} catch (error) {
-    console.error('Error executing zip command:', error);
-}
-  console.log(`Zip file created: ${zipPath}`);
+  console.log(`Files compressed into: ${outputPath}`);
 }
 
 const buildType = process.argv[2];
 
 if (buildType === 'release' || buildType === 'all') {
-  const releaseFiles = ['manifest.json', 'main.js', 'style.css'];
-  const releaseGzipFiles = compressFiles(rootDir, distDir, 'release', releaseFiles);
-  const releaseZipPath = path.resolve(distDir, `release-${projectName}-${version}.zip`);
-  createZip(releaseZipPath, releaseGzipFiles);
+  const releaseFiles = ['manifest.json', 'main.js', 'styles.css'];
+  compressFiles('release');
 }
 
 if (buildType === 'package' || buildType === 'all') {
-  const packageGzipFiles = compressFiles(rootDir, distDir, 'package');
-  const packageZipPath = path.resolve(distDir, `package-${projectName}-${version}.zip`);
-  createZip(packageZipPath, packageGzipFiles);
+  compressFiles('package');
 }

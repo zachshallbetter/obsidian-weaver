@@ -1,4 +1,4 @@
-import { IConversation } from "typings/IThread";
+import { Conversation } from "typings/weaver";
 import Weaver from "main";
 import React, { useEffect, useState, useRef } from "react";
 import { ConversationManager } from "utils/ConversationManager";
@@ -7,8 +7,8 @@ import MessageRenderer from "./ConversationMessageRenderer";
 
 interface ConversationDialogueProps {
 	plugin: Weaver;
-	conversation: IConversation | undefined;
-	setConversationSession: React.Dispatch<React.SetStateAction<IConversation | undefined>>;
+	conversation: Conversation | undefined;
+	setConversationSession: React.Dispatch<React.SetStateAction<Conversation | undefined>>;
 }
 
 export const ConversationDialogue: React.FC<ConversationDialogueProps> = ({
